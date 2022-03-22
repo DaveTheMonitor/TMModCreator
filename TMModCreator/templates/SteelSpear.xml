@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ItemTemplate>
+  <ItemData>
+    <ItemID>SteelSpear</ItemID>
+    <Name>Steel Spear</Name>
+    <Desc>Steel Spear Template</Desc>
+    <IsValid>true</IsValid>
+    <IsEnabled>true</IsEnabled>
+    <LockedDD>true</LockedDD>
+    <LockedCR>false</LockedCR>
+    <LockedSU>false</LockedSU>
+    <MinCSPrice>336</MinCSPrice>
+    <StackSize>100</StackSize>
+    <Durability>1100</Durability>
+    <StrikeDamage>17</StrikeDamage>
+    <StrikeReach>4.8</StrikeReach>
+    <HealPower>0</HealPower>
+    <BurnTime>0</BurnTime>
+    <SmeltTime>0</SmeltTime>
+    <ParticleLight>0</ParticleLight>
+    <CanDropIfLocked>false</CanDropIfLocked>
+    <Plural>S</Plural>
+  </ItemData>
+  <ItemTypeData>
+    <Use>Item</Use>
+    <Use>Item</Use>
+    <Type>Weapon</Type>
+    <SubType>None</SubType>
+    <ClassID>Steel</ClassID>
+    <Inv>Weapon</Inv>
+    <Model>ItemTLBR</Model>
+    <Swing>Spear</Swing>
+    <Equip>RightHand</Equip>
+  </ItemTypeData>
+  <ItemCombatData>
+    <Health>0</Health>
+    <Attack>0</Attack>
+    <Strength>0</Strength>
+    <Defence>45</Defence>
+    <Ranged>0</Ranged>
+    <Looting>60</Looting>
+  </ItemCombatData>
+  <ItemSwingTimeData>
+    <Time>0.43</Time>
+    <Pause>0</Pause>
+    <ExtendedPause>0.03</ExtendedPause>
+    <RetractTime>-1</RetractTime>
+    <RetractSmooth>false</RetractSmooth>
+  </ItemSwingTimeData>
+  <ItemSoundData>
+    <Group>ItemSteelTool</Group>
+  </ItemSoundData>
+  <SkillData>
+    <MineReq>0</MineReq>
+    <UseReq>20</UseReq>
+    <UseSkill>Defence</UseSkill>
+    <CraftReq>22</CraftReq>
+    <CraftSkill>Smithing</CraftSkill>
+  </SkillData>
+  <TextureHD>SpearHD.png</TextureHD>
+  <TextureSD>SpearSD.png</TextureSD>
+</ItemTemplate>

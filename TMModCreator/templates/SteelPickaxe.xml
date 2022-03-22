@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ItemTemplate>
+  <ItemData>
+    <ItemID>SteelPickaxe</ItemID>
+    <Name>Steel Pickaxe</Name>
+    <Desc>Steel Pickaxe Template</Desc>
+    <IsValid>true</IsValid>
+    <IsEnabled>true</IsEnabled>
+    <LockedDD>true</LockedDD>
+    <LockedCR>false</LockedCR>
+    <LockedSU>false</LockedSU>
+    <MinCSPrice>972</MinCSPrice>
+    <StackSize>100</StackSize>
+    <Durability>1000</Durability>
+    <StrikeDamage>4</StrikeDamage>
+    <StrikeReach>1.5</StrikeReach>
+    <HealPower>0</HealPower>
+    <BurnTime>0</BurnTime>
+    <SmeltTime>0</SmeltTime>
+    <ParticleLight>0</ParticleLight>
+    <CanDropIfLocked>false</CanDropIfLocked>
+    <Plural>S</Plural>
+  </ItemData>
+  <ItemTypeData>
+    <Use>Item</Use>
+    <Type>Tool</Type>
+    <SubType>None</SubType>
+    <ClassID>Steel</ClassID>
+    <Inv>Tool</Inv>
+    <Model>Tool</Model>
+    <Swing>Item</Swing>
+    <Equip>RightHand</Equip>
+  </ItemTypeData>
+  <ItemCombatData>
+    <Health>0</Health>
+    <Attack>0</Attack>
+    <Strength>0</Strength>
+    <Defence>0</Defence>
+    <Ranged>0</Ranged>
+    <Looting>0</Looting>
+  </ItemCombatData>
+  <ItemSwingTimeData>
+    <Time>0.27</Time>
+    <Pause>0</Pause>
+    <ExtendedPause>0</ExtendedPause>
+    <RetractTime>-1</RetractTime>
+    <RetractSmooth>false</RetractSmooth>
+  </ItemSwingTimeData>
+  <ItemSoundData>
+    <Group>ItemSteelTool</Group>
+  </ItemSoundData>
+  <SkillData>
+    <MineReq>0</MineReq>
+    <UseReq>20</UseReq>
+    <UseSkill>Mining</UseSkill>
+    <CraftReq>20</CraftReq>
+    <CraftSkill>Smithing</CraftSkill>
+  </SkillData>
+  <TextureHD>PickaxeHD.png</TextureHD>
+  <TextureSD>PickaxeSD.png</TextureSD>
+</ItemTemplate>

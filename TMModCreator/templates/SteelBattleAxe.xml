@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ItemTemplate>
+  <ItemData>
+    <ItemID>SteelBattleAxe</ItemID>
+    <Name>Steel Battle Axe</Name>
+    <Desc>Steel Battle Axe Template</Desc>
+    <IsValid>true</IsValid>
+    <IsEnabled>true</IsEnabled>
+    <LockedDD>true</LockedDD>
+    <LockedCR>false</LockedCR>
+    <LockedSU>false</LockedSU>
+    <MinCSPrice>1614</MinCSPrice>
+    <StackSize>100</StackSize>
+    <Durability>1400</Durability>
+    <StrikeDamage>25</StrikeDamage>
+    <StrikeReach>4.2</StrikeReach>
+    <HealPower>0</HealPower>
+    <BurnTime>0</BurnTime>
+    <SmeltTime>0</SmeltTime>
+    <ParticleLight>0</ParticleLight>
+    <CanDropIfLocked>false</CanDropIfLocked>
+    <Plural>S</Plural>
+  </ItemData>
+  <ItemTypeData>
+    <Use>Item</Use>
+    <Type>Weapon</Type>
+    <SubType>None</SubType>
+    <ClassID>Steel</ClassID>
+    <Inv>Weapon</Inv>
+    <Model>BigWeapon</Model>
+    <Swing>Weapon</Swing>
+    <Equip>RightHand</Equip>
+  </ItemTypeData>
+  <ItemCombatData>
+    <Health>0</Health>
+    <Attack>60</Attack>
+    <Strength>300</Strength>
+    <Defence>-60</Defence>
+    <Ranged>0</Ranged>
+    <Looting>150</Looting>
+  </ItemCombatData>
+  <ItemSwingTimeData>
+    <Time>0.48</Time>
+    <Pause>0</Pause>
+    <ExtendedPause>0</ExtendedPause>
+    <RetractTime>-1</RetractTime>
+    <RetractSmooth>false</RetractSmooth>
+  </ItemSwingTimeData>
+  <ItemSoundData>
+    <Group>ItemSteelTool</Group>
+  </ItemSoundData>
+  <SkillData>
+    <MineReq>0</MineReq>
+    <UseReq>22</UseReq>
+    <UseSkill>Attack</UseSkill>
+    <CraftReq>26</CraftReq>
+    <CraftSkill>Smithing</CraftSkill>
+  </SkillData>
+  <TextureHD>BattleAxeHD.png</TextureHD>
+  <TextureSD>BattleAxeSD.png</TextureSD>
+</ItemTemplate>

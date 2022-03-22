@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ItemTemplate>
+  <ItemData>
+    <ItemID>SpiderBow</ItemID>
+    <Name>Spider Bow</Name>
+    <Desc>Spider Bow Template</Desc>
+    <IsValid>true</IsValid>
+    <IsEnabled>true</IsEnabled>
+    <LockedDD>true</LockedDD>
+    <LockedCR>false</LockedCR>
+    <LockedSU>false</LockedSU>
+    <MinCSPrice>2575</MinCSPrice>
+    <StackSize>100</StackSize>
+    <Durability>1200</Durability>
+    <StrikeDamage>0</StrikeDamage>
+    <StrikeReach>0</StrikeReach>
+    <HealPower>0</HealPower>
+    <BurnTime>0</BurnTime>
+    <SmeltTime>0</SmeltTime>
+    <ParticleLight>0</ParticleLight>
+    <CanDropIfLocked>false</CanDropIfLocked>
+    <Plural>S</Plural>
+  </ItemData>
+  <ItemTypeData>
+    <Use>Item</Use>
+    <Type>Weapon</Type>
+    <SubType>Bow</SubType>
+    <ClassID>CantMine</ClassID>
+    <Inv>Weapon</Inv>
+    <Model>Bow</Model>
+    <Swing>Bow</Swing>
+    <Equip>RightHand</Equip>
+  </ItemTypeData>
+  <ItemCombatData>
+    <Health>0</Health>
+    <Strength>20</Strength>
+    <Defence>60</Defence>
+    <Ranged>400</Ranged>
+    <Ranged>0</Ranged>
+    <Looting>0</Looting>
+  </ItemCombatData>
+  <ItemSwingTimeData>
+    <Time>1.06</Time>
+    <Pause>0.26</Pause>
+    <ExtendedPause>0.4</ExtendedPause>
+    <RetractTime>0.3</RetractTime>
+    <RetractSmooth>true</RetractSmooth>
+  </ItemSwingTimeData>
+  <ItemSoundData>
+    <Group>ItemBow</Group>
+  </ItemSoundData>
+  <SkillData>
+    <MineReq>0</MineReq>
+    <UseReq>21</UseReq>
+    <UseSkill>Ranged</UseSkill>
+    <CraftReq>21</CraftReq>
+    <CraftSkill>Smithing</CraftSkill>
+  </SkillData>
+  <TextureHD>BowHD.png</TextureHD>
+  <TextureSD>BowSD.png</TextureSD>
+</ItemTemplate>
