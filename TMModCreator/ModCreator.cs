@@ -21,6 +21,12 @@ namespace DaveTheMonitor.TMModCreator
         HDItem,
         SD,
     }
+    internal enum TextureBoxOptions : byte
+    {
+        HD,
+        SD,
+        Both
+    }
     internal static class Globals
     {
         internal static readonly bool devBuild;
@@ -31,7 +37,6 @@ namespace DaveTheMonitor.TMModCreator
         internal static readonly Image missingTexture16;
         internal static readonly Image missingTexture32;
         internal static readonly Image missingTexture64;
-        internal static readonly Image missingTexture96;
         internal static readonly Image transparent;
         internal static readonly ItemTypeData emptyItemTypeData;
         internal static readonly ItemCombatData emptyItemCombatData;
@@ -91,7 +96,6 @@ namespace DaveTheMonitor.TMModCreator
             missingTexture16 = Image.FromFile("resources/MissingTexture16.png");
             missingTexture32 = ModCreator.ScaleTexture(missingTexture16, 32);
             missingTexture64 = ModCreator.ScaleTexture(missingTexture16, 64);
-            missingTexture96 = ModCreator.ScaleTexture(missingTexture16, 96);
             emptyItem = new Item();
             emptyItemTypeData = new ItemTypeData()
             {

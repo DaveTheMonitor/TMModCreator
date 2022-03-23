@@ -92,82 +92,50 @@ namespace DaveTheMonitor.TMModCreator
     {
         public Image TextureSD;
         public Image TextureHD;
-        public Image TextureSD64;
-        public Image TextureHD64;
-        public Image TextureSD96;
-        public Image TextureHD96;
         internal void DisposeTextures()
         {
-            if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture64) TextureHD.Dispose();
-            if (TextureHD64 != Globals.missingTexture64) TextureHD64.Dispose();
-            if (TextureHD96 != Globals.missingTexture96) TextureHD96.Dispose();
-
+            if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture32) TextureHD.Dispose();
             if (TextureSD != Globals.missingTexture16) TextureSD.Dispose();
-            if (TextureSD64 != Globals.missingTexture64) TextureSD64.Dispose();
-            if (TextureSD96 != Globals.missingTexture96) TextureSD96.Dispose();
         }
         internal void DisposeTextures(DisposeTextureOptions options)
         {
             if (options == DisposeTextureOptions.HD)
             {
                 if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture64) TextureHD.Dispose();
-                if (TextureHD64 != Globals.missingTexture64) TextureHD64.Dispose();
-                if (TextureHD96 != Globals.missingTexture96) TextureHD96.Dispose();
             }
             else if (options == DisposeTextureOptions.SD)
             {
                 if (TextureSD != Globals.missingTexture16) TextureSD.Dispose();
-                if (TextureSD64 != Globals.missingTexture64) TextureSD64.Dispose();
-                if (TextureSD96 != Globals.missingTexture96) TextureSD96.Dispose();
             }
         }
         public Item(ModItemDataXML itemData) : base(itemData, new ItemTypeData(), new ItemCombatData(), new ItemSwingTimeData(), new ItemSoundData(), new SkillData())
         {
             this.ItemData = itemData;
             this.TextureHD = Globals.missingTexture32;
-            this.TextureHD64 = Globals.missingTexture64;
-            this.TextureHD96 = Globals.missingTexture96;
-
             this.TextureSD = Globals.missingTexture16;
-            this.TextureSD64 = Globals.missingTexture64;
-            this.TextureSD96 = Globals.missingTexture96;
         }
         public Item() : base(new ModItemDataXML(), new ItemTypeData(), new ItemCombatData(), new ItemSwingTimeData(), new ItemSoundData(), new SkillData())
         {
             this.TextureHD = Globals.missingTexture32;
-            this.TextureHD64 = Globals.missingTexture64;
-            this.TextureHD96 = Globals.missingTexture96;
-
             this.TextureSD = Globals.missingTexture16;
-            this.TextureSD64 = Globals.missingTexture64;
-            this.TextureSD96 = Globals.missingTexture96;
         }
         public Item(ItemTemplate template) : base(template.ItemData, template.ItemTypeData, template.ItemCombatData, template.ItemSwingTimeData, template.ItemSoundData, template.SkillData)
         {
             if (template.currentItem)
             {
                 this.TextureHD = ModCreator.ScaleTexture(Globals.selectedItem.TextureHD, 32);
-                this.TextureHD64 = ModCreator.ScaleTexture(Globals.selectedItem.TextureHD64, 64);
-                this.TextureHD96 = ModCreator.ScaleTexture(Globals.selectedItem.TextureHD96, 96);
-
                 this.TextureSD = ModCreator.ScaleTexture(Globals.selectedItem.TextureSD, 16);
-                this.TextureSD64 = ModCreator.ScaleTexture(Globals.selectedItem.TextureSD64, 64);
-                this.TextureSD96 = ModCreator.ScaleTexture(Globals.selectedItem.TextureSD96, 96);
             }
             else
             {
                 using (Image textureHD = Image.FromFile(Path.Combine(Globals.templatesDirectory, "textures", template.TextureHD)))
                 {
                     this.TextureHD = textureHD;
-                    this.TextureHD64 = ModCreator.ScaleTexture(textureHD, 64);
-                    this.TextureHD96 = ModCreator.ScaleTexture(textureHD, 96);
                 }
 
                 using (Image textureSD = Image.FromFile(Path.Combine(Globals.templatesDirectory, "textures", template.TextureSD)))
                 {
                     this.TextureSD = textureSD;
-                    this.TextureSD64 = ModCreator.ScaleTexture(textureSD, 64);
-                    this.TextureSD96 = ModCreator.ScaleTexture(textureSD, 96);
                 }
             }
         }

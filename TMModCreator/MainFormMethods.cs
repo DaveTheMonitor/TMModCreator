@@ -191,8 +191,7 @@
 
         private void UnloadMod()
         {
-            hdTextureBox.Image = null;
-            sdTextureBox.Image = null;
+            UnloadTextureBox();
             DeselectItem();
             DeselectClass();
             foreach (Item item in Globals.itemsList)
@@ -201,6 +200,14 @@
             }
             Globals.ClearItemsList(itemsComboBox);
             Globals.ClearClassesList(classComboBox);
+        }
+
+        private void UnloadTextureBox()
+        {
+            if (hdTextureBox.Image != null) hdTextureBox.Image.Dispose();
+            if (sdTextureBox.Image != null) sdTextureBox.Image.Dispose();
+            hdTextureBox.Image = null;
+            sdTextureBox.Image = null;
         }
 
         private void RegisterItem(Item item)
@@ -217,11 +224,7 @@
             foreach (Item item in Globals.itemsList)
             {
                 if (item.TextureHD == null) item.TextureHD = Globals.missingTexture32;
-                if (item.TextureHD64 == null) item.TextureHD64 = Globals.missingTexture64;
-                if (item.TextureHD96 == null) item.TextureHD96 = Globals.missingTexture96;
                 if (item.TextureSD == null) item.TextureSD = Globals.missingTexture16;
-                if (item.TextureSD64 == null) item.TextureSD64 = Globals.missingTexture64;
-                if (item.TextureSD96 == null) item.TextureSD96 = Globals.missingTexture96;
             }
         }
         private void ReadTextures(string path, string xmlPath, TextureType type)
@@ -239,14 +242,10 @@
                             ItemXML item = textures[i];
                             if (type == TextureType.SD)
                             {
-                                Globals.items[item.ItemID].TextureSD96 = ModCreator.ScaleAtlasTexture(atlas, 96, size, i);
-                                Globals.items[item.ItemID].TextureSD64 = ModCreator.ScaleAtlasTexture(atlas, 64, size, i);
                                 Globals.items[item.ItemID].TextureSD = ModCreator.ScaleAtlasTexture(atlas, size, size, i);
                             }
                             else
                             {
-                                Globals.items[item.ItemID].TextureHD96 = ModCreator.ScaleAtlasTexture(atlas, 96, size, i);
-                                Globals.items[item.ItemID].TextureHD64 = ModCreator.ScaleAtlasTexture(atlas, 64, size, i);
                                 Globals.items[item.ItemID].TextureHD = ModCreator.ScaleAtlasTexture(atlas, size, size, i);
                             }
                         }
@@ -313,8 +312,7 @@
                 itemsComboBox.Text = itemID;
                 nameTextBox.Text = item.ItemData.Name;
                 descTextBox.Text = item.ItemData.Desc;
-                hdTextureBox.Image = item.TextureHD96;
-                sdTextureBox.Image = item.TextureSD96;
+                SetTextureBox(item);
 
                 int durability = ModCreator.GetNull(item.ItemData.Durability, 0);
                 int sellPrice = ModCreator.GetNull(item.ItemData.MinCSPrice, -1);
@@ -465,8 +463,7 @@
             Item item = Globals.items[itemID];
             if (Globals.selectedItem == item)
             {
-                hdTextureBox.Image = null;
-                sdTextureBox.Image = null;
+                UnloadTextureBox();
                 itemsComboBox.Text = string.Empty;
                 DeselectItem();
             }
@@ -494,17 +491,13 @@
                 {
                     Globals.selectedItem.DisposeTextures(DisposeTextureOptions.SD);
                     Globals.selectedItem.TextureSD = ModCreator.ScaleTexture(originalTexture, textureSize);
-                    Globals.selectedItem.TextureSD64 = ModCreator.ScaleTexture(originalTexture, 64);
-                    Globals.selectedItem.TextureSD96 = ModCreator.ScaleTexture(originalTexture, 96);
-                    sdTextureBox.Image = Globals.selectedItem.TextureSD96;
+                    SetTextureBox(Globals.selectedItem, TextureBoxOptions.SD);
                 }
                 else
                 {
                     Globals.selectedItem.DisposeTextures(DisposeTextureOptions.HD);
                     Globals.selectedItem.TextureHD = ModCreator.ScaleTexture(originalTexture, textureSize);
-                    Globals.selectedItem.TextureHD64 = ModCreator.ScaleTexture(originalTexture, 64);
-                    Globals.selectedItem.TextureHD96 = ModCreator.ScaleTexture(originalTexture, 96);
-                    hdTextureBox.Image = Globals.selectedItem.TextureHD96;
+                    SetTextureBox(Globals.selectedItem, TextureBoxOptions.HD);
                 }
             }
             catch
@@ -677,6 +670,20 @@
                     itemPropertiesPanel.Visible = true;
                     buildModButton.Enabled = true;
                 }
+            }
+        }
+
+        internal void SetTextureBox(Item item, TextureBoxOptions options = TextureBoxOptions.Both)
+        {
+            if (options == TextureBoxOptions.HD || options == TextureBoxOptions.Both)
+            {
+                if (hdTextureBox.Image != null) hdTextureBox.Image.Dispose();
+                hdTextureBox.Image = ModCreator.ScaleTexture(item.TextureHD, 96);
+            }
+            if (options == TextureBoxOptions.SD || options == TextureBoxOptions.Both)
+            {
+                if (sdTextureBox.Image != null) sdTextureBox.Image.Dispose();
+                sdTextureBox.Image = ModCreator.ScaleTexture(item.TextureSD, 96);
             }
         }
     }
