@@ -3,25 +3,17 @@
     public partial class MainForm : Form
     {
         List<Panel> otherDataPanels = new List<Panel>();
+        internal BlueprintDataPictureBox[] bpBoxes = new BlueprintDataPictureBox[9];
+        internal BlueprintDataPictureBox? selectedBPBox = null;
+        Label blueprintOutputCountLabel;
 
-        // These methods move the panels to the side instead of hiding them.
-        // This is because earlier dev builds allowed for fullscreen,
-        // but now they don't and I'm too lazy to change it right now.
-        // This will be changed in a future build.
-        private void UpdateOtherPanelLocations()
+        private void UpdateOtherDataPanelVisibility(int index)
         {
             for (int i = 0; i < otherDataPanels.Count; i++)
             {
-                otherDataPanels[i].Location = new Point(-1 + (275 * i), 43);
+                if (i != index) otherDataPanels[i].Visible = false;
+                else otherDataPanels[i].Visible = true;
             }
-        }
-
-        private void MoveOtherPanel(Panel panel, int index)
-        {
-            int oldIndex = otherDataPanels.IndexOf(panel);
-            otherDataPanels[oldIndex] = otherDataPanels[index];
-            otherDataPanels[index] = panel;
-            UpdateOtherPanelLocations();
         }
 
         private void LoadMod()
@@ -65,6 +57,7 @@
             string itemSwingTimeDataPath = Path.Combine(path, "ItemSwingTimeData.xml");
             string itemSoundDataPath = Path.Combine(path, "ItemSoundData.xml");
             string skillDataPath = Path.Combine(path, "SkillData.xml");
+            string blueprintDataPath = Path.Combine(path, "BlueprintData.xml");
             string itemClassPath = Path.Combine(path, "ItemTypeClassData.xml");
             ModItemDataXML[] itemData = ModCreator.Deserialize<ModItemDataXML[]>(Path.Combine(itemDataPath));
             foreach (ModItemDataXML itemXML in itemData)
@@ -158,9 +151,25 @@
                     }
                 }
             }
-            ReadTextures(path);
-            Globals.CreateBaseClasses();
+            if (files.Contains(blueprintDataPath))
+            {
+                ModBlueprintDataXML[] blueprintData = ModCreator.Deserialize<ModBlueprintDataXML[]>(blueprintDataPath);
+                foreach (ModBlueprintDataXML blueprintXML in blueprintData)
+                {
+                    try
+                    {
+                        Item item = Globals.items[blueprintXML.ItemID];
+                        item.BlueprintData = new BlueprintData(blueprintXML);
+                    }
+                    catch
+                    {
+                        throw new Exception($"Invalid BlueprintData.xml; {blueprintXML.ItemID} not present in ItemData.xml.");
+                    }
+                }
+            }
 
+            ReadTextures(path);
+            Globals.CreateBaseClasses(this);
             if (files.Contains(itemClassPath))
             {
                 ModItemTypeClassDataXML[] itemClasses = ModCreator.Deserialize<ModItemTypeClassDataXML[]>(itemClassPath);
@@ -174,14 +183,9 @@
                     }
                     else
                     {
-                        Globals.RegisterClass(new ItemTypeClass(itemClass));
+                        Globals.RegisterClass(new ItemTypeClass(itemClass), this);
                     }
                 }
-            }
-            foreach (ItemTypeClass itemClass in Globals.classesList)
-            {
-                classComboBox.Items.Add(itemClass.ClassID);
-                itemClassComboBox.Items.Add(itemClass.ClassID);
             }
 
             Globals.modName = new DirectoryInfo(path).Name;
@@ -194,12 +198,22 @@
             UnloadTextureBox();
             DeselectItem();
             DeselectClass();
+            DeselectBlueprintPictureBox();
+            foreach (BlueprintDataPictureBox bpBox in bpBoxes)
+            {
+                bpBox.SetTexture(null);
+                bpBox.SetCountLabel(1);
+            }
+            if (blueprintOutputPictureBox.Image != null) blueprintOutputPictureBox.Image.Dispose();
+            blueprintOutputPictureBox.Image = null;
+            blueprintOutputCountLabel.Visible = false;
+
             foreach (Item item in Globals.itemsList)
             {
                 item.DisposeTextures();
             }
-            Globals.ClearItemsList(itemsComboBox);
-            Globals.ClearClassesList(classComboBox);
+            Globals.ClearItemsList(this);
+            Globals.ClearClassesList(this);
         }
 
         private void UnloadTextureBox()
@@ -212,8 +226,7 @@
 
         private void RegisterItem(Item item)
         {
-            Globals.RegisterItem(item);
-            itemsComboBox.Items.Add(item.ItemData.ItemID);
+            Globals.RegisterItem(item, this);
         }
 
         private void ReadTextures(string modPath)
@@ -440,6 +453,54 @@
                 itemDataPanel.Enabled = true;
                 otherItemDataPanel.Enabled = true;
                 if (otherItemDataComboBox.SelectedIndex == -1) otherItemDataComboBox.SelectedIndex = 0;
+
+                DeselectBlueprintPictureBox();
+                if (blueprintOutputPictureBox.Image != null) blueprintOutputPictureBox.Image.Dispose();
+                blueprintOutputPictureBox.Image = ModCreator.ScaleTexture(item.TextureHD, 32);
+                blueprintTypeComboBox.SelectedItem = ModCreator.GetNull(item.BlueprintData.CraftType, CraftingType.Crafting).ToString();
+                blueprintIsValidCheckBox.Checked = ModCreator.GetNull(item.BlueprintData.IsValid, true);
+                blueprintMinDepthNumeric.Value = (decimal)ModCreator.GetNull(item.BlueprintData.Depth.X, 0f) * 100;
+                blueprintMaxDepthNumeric.Value = (decimal)ModCreator.GetNull(item.BlueprintData.Depth.Y, 0f) * 100;
+                blueprintIsDefaultCheckBox.Checked = ModCreator.GetNull(item.BlueprintData.IsDefault, false);
+                blueprintDepthLabel.Enabled = blueprintIsDefaultCheckBox.Checked;
+                blueprintMinDepthNumeric.Enabled = blueprintIsDefaultCheckBox.Checked;
+                blueprintMaxDepthNumeric.Enabled = blueprintIsDefaultCheckBox.Checked;
+                foreach (BlueprintDataPictureBox bpBox in bpBoxes)
+                {
+                    ModInventoryItemXML material = item.BlueprintData.Materials[bpBox.MaterialIndex];
+                    if (bpBox.Image != null) bpBox.SetTexture(null);
+                    if (Globals.items.TryGetValue(material.ItemID, out Item? matItem))
+                    {
+                        bpBox.SetTexture(matItem.TextureHD);
+                    }
+                    else if (!material.ItemID.Equals(string.Empty) && !material.ItemID.Equals(Globals.stringNone))
+                    {
+                        bpBox.SetTexture(Globals.unknownTexture16);
+                    }
+                    bpBox.SetCountLabel(material.Count);
+                }
+                if (item.BlueprintData.Count > 1)
+                {
+                    blueprintOutputCountLabel.Visible = true;
+                    blueprintOutputCountLabel.Text = item.BlueprintData.Count.ToString();
+                }
+                else
+                {
+                    blueprintOutputCountLabel.Visible = false;
+                }
+            }
+        }
+        private void DeselectBlueprintPictureBox()
+        {
+            blueprintOutputPictureBox.BackColor = SystemColors.ControlDark;
+            if (selectedBPBox != null) selectedBPBox.DeselectBox(false);
+            else
+            {
+                blueprintItemIDComboBox.Enabled = false;
+                blueprintCountLabel.Enabled = false;
+                blueprintCountNumeric.Enabled = false;
+                blueprintDurabilityNumeric.Enabled = false;
+                blueprintDurabilityCheckBox.Enabled = false;
             }
         }
         private void DeleteItem()
@@ -527,7 +588,7 @@
         }
         private void RegisterClass(ItemTypeClass itemClass)
         {
-            Globals.RegisterClass(itemClass);
+            Globals.RegisterClass(itemClass, this);
             classComboBox.Items.Add(itemClass.ClassID);
             itemClassComboBox.Items.Add(itemClass.ClassID);
         }
@@ -660,7 +721,7 @@
                     else if (needConfirm) return;
                     Globals.modName = modName;
                     Globals.selectedItem = Globals.emptyItem;
-                    if (Globals.baseClasses.Count == 0) Globals.CreateBaseClasses();
+                    if (Globals.baseClasses.Count == 0) Globals.CreateBaseClasses(this);
                     foreach (ItemTypeClass itemClass in Globals.classesList)
                     {
                         classComboBox.Items.Add(itemClass.ClassID);

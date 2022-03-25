@@ -232,15 +232,11 @@ namespace DaveTheMonitor.TMModCreator
     {
         public string ItemID;
         public int Count;
-        public ModInventoryItemNDXML(InventoryItemNDXML data)
+
+        public ModInventoryItemNDXML(string id, int count)
         {
-            ItemID = data.ItemID;
-            if (data.Count == null)
-            {
-                if (data.ItemID.ToLower() == "none") Count = 0;
-                else Count = 1;
-            }
-            else Count = (int)data.Count;
+            ItemID = id;
+            Count = count;
         }
         public ModInventoryItemNDXML()
         {
@@ -253,17 +249,17 @@ namespace DaveTheMonitor.TMModCreator
         public string ItemID;
         public ushort Durability;
         public int Count;
-        public ModInventoryItemXML(InventoryItemXML data)
+
+        public ModInventoryItemXML Clone()
         {
-            ItemID = data.ItemID;
-            if (data.Durability == null) Durability = 0;
-            else Durability = (ushort)data.Durability;
-            if (data.Count == null)
-            {
-                if (data.ItemID.ToLower() == "none") Count = 0;
-                else Count = 1;
-            }
-            else Count = (int)data.Count;
+            return (ModInventoryItemXML)MemberwiseClone();
+        }
+        public bool ItemIDNone { get { return ItemID.Equals(string.Empty) || ItemID.Equals(Globals.stringNone); } }
+        public ModInventoryItemXML(string itemID, ushort durability, int count)
+        {
+            ItemID = itemID;
+            Durability = durability;
+            Count = count;
         }
         public ModInventoryItemXML()
         {
@@ -318,6 +314,10 @@ namespace DaveTheMonitor.TMModCreator
         public ushort? DropChance;
         public PluralType? Plural;
 
+        public ModItemDataXML Clone()
+        {
+            return (ModItemDataXML)MemberwiseClone();
+        }
         public bool IsValidSpecified { get { return IsValid != null && IsValid != true; } }
         public bool IsEnabledSpecified { get { return IsEnabled != null && IsEnabled != true; } }
         public bool LockedDDSpecified { get { return LockedDD != null && LockedDD != true; } }
@@ -519,57 +519,45 @@ namespace DaveTheMonitor.TMModCreator
         public ModInventoryItemXML? Material33;
 
         public bool ItemIDSpecified { get { return ItemID != null; } }
-        public bool CraftTypeSpecified { get { return CraftType != null; } }
-        public bool IsValidSpecified { get { return IsValid != null; } }
-        public bool IsDefaultSpecified { get { return IsDefault != null; } }
-        public bool DepthSpecified { get { return Depth != null; } }
+        public bool CraftTypeSpecified { get { return CraftType != null && CraftType != CraftingType.Crafting; } }
+        public bool IsValidSpecified { get { return IsValid != null && IsValid != true; } }
+        public bool IsDefaultSpecified { get { return IsDefault != null && IsDefault != false; } }
+        public bool DepthSpecified { get { return Depth != null && !Depth.Equals(new Vector2(0, 0)); } }
         public bool ResultSpecified { get { return Result != null; } }
-        public bool Material11Specified { get { return Material11 != null; } }
-        public bool Material12Specified { get { return Material12 != null; } }
-        public bool Material13Specified { get { return Material13 != null; } }
-        public bool Material21Specified { get { return Material21 != null; } }
-        public bool Material22Specified { get { return Material22 != null; } }
-        public bool Material23Specified { get { return Material23 != null; } }
-        public bool Material31Specified { get { return Material31 != null; } }
-        public bool Material32Specified { get { return Material32 != null; } }
-        public bool Material33Specified { get { return Material33 != null; } }
-        public ModBlueprintDataXML(Blueprint data)
+        public bool Material11Specified { get { return Material11 != null && !Material11.ItemIDNone; } }
+        public bool Material12Specified { get { return Material12 != null && !Material12.ItemIDNone; } }
+        public bool Material13Specified { get { return Material13 != null && !Material13.ItemIDNone; } }
+        public bool Material21Specified { get { return Material21 != null && !Material21.ItemIDNone && CraftType != CraftingType.Furnace; } }
+        public bool Material22Specified { get { return Material22 != null && !Material22.ItemIDNone && CraftType != CraftingType.Furnace; } }
+        public bool Material23Specified { get { return Material23 != null && !Material23.ItemIDNone && CraftType != CraftingType.Furnace; } }
+        public bool Material31Specified { get { return Material31 != null && !Material31.ItemIDNone && CraftType != CraftingType.Furnace; } }
+        public bool Material32Specified { get { return Material32 != null && !Material32.ItemIDNone && CraftType != CraftingType.Furnace; } }
+        public bool Material33Specified { get { return Material33 != null && !Material33.ItemIDNone && CraftType != CraftingType.Furnace; } }
+        public ModBlueprintDataXML(string id, BlueprintData data)
         {
-            ItemID = data.ItemID;
+            ItemID = id;
             CraftType = data.CraftType;
             IsValid = data.IsValid;
             IsDefault = data.IsDefault;
             Depth = data.Depth;
-            if (data.Result != null)
+            Result = new ModInventoryItemNDXML(id, data.Count);
+            foreach (ModInventoryItemXML material in data.Materials)
             {
-                InventoryItemNDXML itemXML = (InventoryItemNDXML)data.Result;
-                if (itemXML.ItemID == null) itemXML.ItemID = data.ItemID;
-                if (itemXML.Count == null) itemXML.Count = 1;
-                Result = new ModInventoryItemNDXML(itemXML);
+                if (!material.ItemIDNone && material.Count == 0) material.Count = 1;
             }
-            else Result = new ModInventoryItemNDXML() { ItemID = data.ItemID, Count = 1 };
-            if (data.Material11 != null) Material11 = new ModInventoryItemXML((InventoryItemXML)data.Material11);
-            else Material11 = null;
-            if (data.Material12 != null) Material12 = new ModInventoryItemXML((InventoryItemXML)data.Material12);
-            else Material12 = null;
-            if (data.Material13 != null) Material13 = new ModInventoryItemXML((InventoryItemXML)data.Material13);
-            else Material13 = null;
-            if (data.Material21 != null) Material21 = new ModInventoryItemXML((InventoryItemXML)data.Material21);
-            else Material21 = null;
-            if (data.Material22 != null) Material22 = new ModInventoryItemXML((InventoryItemXML)data.Material22);
-            else Material22 = null;
-            if (data.Material23 != null) Material23 = new ModInventoryItemXML((InventoryItemXML)data.Material23);
-            else Material23 = null;
-            if (data.Material31 != null) Material31 = new ModInventoryItemXML((InventoryItemXML)data.Material31);
-            else Material31 = null;
-            if (data.Material32 != null) Material32 = new ModInventoryItemXML((InventoryItemXML)data.Material32);
-            else Material32 = null;
-            if (data.Material33 != null) Material33 = new ModInventoryItemXML((InventoryItemXML)data.Material33);
-            else Material33 = null;
+            Material31 = data.Materials[0];
+            Material32 = data.Materials[1];
+            Material33 = data.Materials[2];
+            Material21 = data.Materials[3];
+            Material22 = data.Materials[4];
+            Material23 = data.Materials[5];
+            Material11 = data.Materials[6];
+            Material12 = data.Materials[7];
+            Material13 = data.Materials[8];
         }
         public ModBlueprintDataXML()
         {
-            ItemID = string.Empty;
+            ItemID = "None";
         }
     }
     public class ModSkillDataXML

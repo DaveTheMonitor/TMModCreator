@@ -37,11 +37,13 @@ namespace DaveTheMonitor.TMModCreator
         internal static readonly Image missingTexture16;
         internal static readonly Image missingTexture32;
         internal static readonly Image missingTexture64;
+        internal static readonly Image unknownTexture16;
         internal static readonly Image transparent;
         internal static readonly ItemTypeData emptyItemTypeData;
         internal static readonly ItemCombatData emptyItemCombatData;
         internal static readonly ItemSwingTimeData emptyItemSwingTimeData;
         internal static readonly ItemSoundData emptyItemSoundData;
+        internal static readonly string stringNone;
         internal static string templatesDirectory;
         internal static string? modName;
         internal static Item selectedItem;
@@ -61,41 +63,50 @@ namespace DaveTheMonitor.TMModCreator
             }
             return false;
         }
-        internal static void RegisterItem(Item item)
+        internal static void RegisterItem(Item item, MainForm form)
         {
             itemsList.Add(item);
             items.Add(item.ItemData.ItemID, item);
+            form.itemsComboBox.Items.Add(item.ItemData.ItemID);
+            form.blueprintItemIDComboBox.Items.Add(item.ItemData.ItemID);
         }
-        internal static void RegisterClass(ItemTypeClass itemClass)
+        internal static void RegisterClass(ItemTypeClass itemClass, MainForm form)
         {
             classesList.Add(itemClass);
             classes.Add(itemClass.ClassID, itemClass);
+            form.classComboBox.Items.Add(itemClass.ClassID);
+            form.itemClassComboBox.Items.Add(itemClass.ClassID);
         }
-        internal static void ClearItemsList(ComboBox comboBox)
+        internal static void ClearItemsList(MainForm form)
         {
             items.Clear();
             itemsList.Clear();
-            comboBox.Items.Clear();
-            comboBox.SelectedIndex = -1;
-            comboBox.Text = null;
+            form.itemsComboBox.Items.Clear();
+            form.itemsComboBox.SelectedIndex = -1;
+            form.itemsComboBox.Text = null;
+            form.blueprintItemIDComboBox.Items.Clear();
+            form.blueprintItemIDComboBox.SelectedIndex = -1;
+            form.blueprintItemIDComboBox.Text = null;
         }
-        internal static void ClearClassesList(ComboBox comboBox)
+        internal static void ClearClassesList(MainForm form)
         {
             classes.Clear();
             classesList.Clear();
             baseClasses.Clear();
-            comboBox.Items.Clear();
-            comboBox.SelectedIndex = -1;
-            comboBox.Text = null;
+            form.classComboBox.Items.Clear();
+            form.classComboBox.SelectedIndex = -1;
+            form.classComboBox.Text = null;
         }
 
         static Globals()
         {
             devBuild = true;
             maxSkillLevel = 175;
+            stringNone = "None";
             missingTexture16 = Image.FromFile("resources/MissingTexture16.png");
             missingTexture32 = ModCreator.ScaleTexture(missingTexture16, 32);
             missingTexture64 = ModCreator.ScaleTexture(missingTexture16, 64);
+            unknownTexture16 = Image.FromFile("resources/UnknownTexture16.png");
             emptyItem = new Item();
             emptyItemTypeData = new ItemTypeData()
             {
@@ -145,21 +156,21 @@ namespace DaveTheMonitor.TMModCreator
             selectedClass = emptyClass;
         }
 
-        internal static void CreateBaseClasses()
+        internal static void CreateBaseClasses(MainForm form)
         {
-            RegisterClass(new ItemTypeClass("None", 0, 0, false, false));
-            RegisterClass(new ItemTypeClass("CantMine", 0, 0, false, false));
-            RegisterClass(new ItemTypeClass("Hand", 200, 1600, true, false));
-            RegisterClass(new ItemTypeClass("Wood", 300, 1800, true, false));
-            RegisterClass(new ItemTypeClass("Bronze", 325, 2150, true, false));
-            RegisterClass(new ItemTypeClass("Iron", 360, 2500, true, false));
-            RegisterClass(new ItemTypeClass("Steel", 450, 3150, true, false));
-            RegisterClass(new ItemTypeClass("GreenstoneGold", 600, 4200, true, false));
-            RegisterClass(new ItemTypeClass("Platinum", 800, 4200, true, false));
-            RegisterClass(new ItemTypeClass("Diamond", 900, 5400, true, false));
-            RegisterClass(new ItemTypeClass("Ruby", 1000, 5800, true, false));
-            RegisterClass(new ItemTypeClass("Titanium", 1200, 65000, true, false));
-            RegisterClass(new ItemTypeClass("SledgeHammer", 65000, 65000, true, false));
+            RegisterClass(new ItemTypeClass("None", 0, 0, false, false), form);
+            RegisterClass(new ItemTypeClass("CantMine", 0, 0, false, false), form);
+            RegisterClass(new ItemTypeClass("Hand", 200, 1600, true, false), form);
+            RegisterClass(new ItemTypeClass("Wood", 300, 1800, true, false), form);
+            RegisterClass(new ItemTypeClass("Bronze", 325, 2150, true, false), form);
+            RegisterClass(new ItemTypeClass("Iron", 360, 2500, true, false), form);
+            RegisterClass(new ItemTypeClass("Steel", 450, 3150, true, false), form);
+            RegisterClass(new ItemTypeClass("GreenstoneGold", 600, 4200, true, false), form);
+            RegisterClass(new ItemTypeClass("Platinum", 800, 4200, true, false), form);
+            RegisterClass(new ItemTypeClass("Diamond", 900, 5400, true, false), form);
+            RegisterClass(new ItemTypeClass("Ruby", 1000, 5800, true, false), form);
+            RegisterClass(new ItemTypeClass("Titanium", 1200, 65000, true, false), form);
+            RegisterClass(new ItemTypeClass("SledgeHammer", 65000, 65000, true, false), form);
             baseClasses.Add(new ItemTypeClass("None", 0, 0, false, false));
             baseClasses.Add(new ItemTypeClass("CantMine", 0, 0, false, false));
             baseClasses.Add(new ItemTypeClass("Hand", 200, 1600, false, false));
@@ -268,6 +279,103 @@ namespace DaveTheMonitor.TMModCreator
         {
             if (value == null) return defaultValue;
             else return value;
+        }
+    }
+
+    public class BlueprintDataPictureBox : PictureBox
+    {
+        public int MaterialIndex;
+        public MainForm Form;
+        public Label CountLabel;
+        private void ClickMethod(object? sender, EventArgs e)
+        {
+            if (sender == null) return;
+            SelectBox();
+        }
+        public void SetTexture(Image? texture)
+        {
+            if (Image != null) Image.Dispose();
+            if (texture == null)
+            {
+                Image = null;
+                return;
+            }
+            Image = ModCreator.ScaleTexture(texture, 32);
+        }
+        public void SetCountLabel(int count)
+        {
+            if (count <= 1) CountLabel.Visible = false;
+            else
+            {
+                CountLabel.Visible = true;
+                CountLabel.Text = count.ToString();
+            }
+        }
+        public void DeselectBox(bool nextSelect)
+        {
+            if (!nextSelect)
+            {
+                Form.blueprintItemIDComboBox.Enabled = false;
+                Form.blueprintCountLabel.Enabled = false;
+                Form.blueprintCountNumeric.Enabled = false;
+                Form.blueprintDurabilityNumeric.Enabled = false;
+                Form.blueprintDurabilityCheckBox.Enabled = false;
+                Form.selectedBPBox = null;
+            }
+            BackColor = SystemColors.ControlDark;
+        }
+        public void SelectBox()
+        {
+            Focus();
+            Form.blueprintOutputPictureBox.BackColor = SystemColors.ControlDark;
+            foreach (BlueprintDataPictureBox box in Form.bpBoxes)
+            {
+                if (box != this) box.DeselectBox(true);
+            }
+            Form.selectedBPBox = this;
+            BackColor = SystemColors.Control;
+            string toolTip = "How many of this material is required to craft this item.";
+            Form.blueprintDataToolTip.SetToolTip(Form.blueprintCountLabel, toolTip);
+            Form.blueprintDataToolTip.SetToolTip(Form.blueprintCountNumeric, toolTip);
+
+            ModInventoryItemXML material = Globals.selectedItem.BlueprintData.Materials[MaterialIndex];
+            Form.blueprintCountNumeric.Value = Math.Max(material.Count, 1);
+            Form.blueprintDurabilityNumeric.Value = material.Durability;
+            if (material.Durability == 0)
+            {
+                Form.blueprintDurabilityCheckBox.Checked = false;
+            }
+            else
+            {
+                Form.blueprintDurabilityCheckBox.Checked = true;
+            }
+            if (Form.blueprintItemIDComboBox.Items.Contains(material.ItemID))
+            {
+                Form.blueprintItemIDComboBox.SelectedItem = material.ItemID;
+            }
+            else if (material.ItemIDNone)
+            {
+                Form.blueprintItemIDComboBox.Text = string.Empty;
+                Form.blueprintItemIDComboBox.SelectedItem = null;
+            }
+            else Form.blueprintItemIDComboBox.Text = material.ItemID;
+
+            Form.blueprintItemIDComboBox.Enabled = true;
+            Form.blueprintCountLabel.Enabled = true;
+            Form.blueprintCountNumeric.Enabled = true;
+            Form.blueprintDurabilityCheckBox.Enabled = true;
+        }
+
+        public BlueprintDataPictureBox(int materialIndex, MainForm form) : base()
+        {
+            MaterialIndex = materialIndex;
+            Form = form;
+            CountLabel = new Label();
+            CountLabel.Parent = this;
+            CountLabel.BackColor = Color.Transparent;
+            CountLabel.Location = new Point(1, 1);
+            Click += new EventHandler(ClickMethod);
+            CountLabel.Click += new EventHandler(ClickMethod);
         }
     }
 }

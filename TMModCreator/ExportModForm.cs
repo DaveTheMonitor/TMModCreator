@@ -74,6 +74,7 @@ namespace DaveTheMonitor.TMModCreator
             List<ModItemSoundDataXML> soundData = new List<ModItemSoundDataXML>();
             List<ModItemTypeClassDataXML> classData = new List<ModItemTypeClassDataXML>();
             List<ModSkillDataXML> skillData = new List<ModSkillDataXML>();
+            List<ModBlueprintDataXML> blueprintData = new List<ModBlueprintDataXML>();
             foreach (Item item in Globals.itemsList)
             {
                 itemData.Add(item.ItemData);
@@ -82,6 +83,7 @@ namespace DaveTheMonitor.TMModCreator
                 if (item.ItemSwingTimeDataSpecified) swingTimeData.Add(new ModItemSwingTimeDataXML(item.ItemData.ItemID, item.ItemSwingTimeData));
                 if (item.ItemSoundDataSpecified) soundData.Add(new ModItemSoundDataXML(item.ItemData.ItemID, item.ItemSoundData));
                 if (item.SkillDataSpecified) skillData.Add(new ModSkillDataXML(item.ItemData.ItemID, item.SkillData));
+                if (item.BlueprintDataSpecified) blueprintData.Add(new ModBlueprintDataXML(item.ItemData.ItemID, item.BlueprintData));
             }
             foreach (ItemTypeClass itemClass in Globals.classesList)
             {
@@ -94,6 +96,7 @@ namespace DaveTheMonitor.TMModCreator
             SaveFile(soundData.ToArray(), Path.Combine(path, "ItemSoundData.xml"));
             SaveFile(classData.ToArray(), Path.Combine(path, "ItemTypeClassData.xml"));
             SaveFile(skillData.ToArray(), Path.Combine(path, "SkillData.xml"));
+            SaveFile(blueprintData.ToArray(), Path.Combine(path, "BlueprintData.xml"));
 
             static void SaveFile<T>(T[] data, string path, bool deleteIfNotExist = true)
             {

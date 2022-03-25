@@ -48,6 +48,7 @@
             this.retractSmoothCheckBox = new System.Windows.Forms.CheckBox();
             this.pauseLabel = new System.Windows.Forms.Label();
             this.pauseNumeric = new System.Windows.Forms.NumericUpDown();
+            this.blueprintItemIDComboBox = new System.Windows.Forms.ComboBox();
             this.swingTimePreviewPausePanel = new System.Windows.Forms.Panel();
             this.swingTimePreviewRetractPanel = new System.Windows.Forms.Panel();
             this.swingTimePreviewExtendedPausePanel = new System.Windows.Forms.Panel();
@@ -62,6 +63,21 @@
             this.equipComboBox = new System.Windows.Forms.ComboBox();
             this.itemPropertiesPanel = new System.Windows.Forms.Panel();
             this.otherItemDataPanel = new System.Windows.Forms.Panel();
+            this.blueprintDataPanel = new System.Windows.Forms.Panel();
+            this.hDiv6 = new System.Windows.Forms.Panel();
+            this.blueprintIsDefaultCheckBox = new System.Windows.Forms.CheckBox();
+            this.blueprintIsValidCheckBox = new System.Windows.Forms.CheckBox();
+            this.hDiv5 = new System.Windows.Forms.Panel();
+            this.blueprintTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.blueprintMaxDepthNumeric = new System.Windows.Forms.NumericUpDown();
+            this.blueprintMinDepthNumeric = new System.Windows.Forms.NumericUpDown();
+            this.blueprintDepthLabel = new System.Windows.Forms.Label();
+            this.blueprintDurabilityNumeric = new System.Windows.Forms.NumericUpDown();
+            this.blueprintDurabilityCheckBox = new System.Windows.Forms.CheckBox();
+            this.blueprintCountNumeric = new System.Windows.Forms.NumericUpDown();
+            this.blueprintCountLabel = new System.Windows.Forms.Label();
+            this.hDiv7 = new System.Windows.Forms.Panel();
+            this.blueprintOutputPictureBox = new System.Windows.Forms.PictureBox();
             this.itemSkillDataPanel = new System.Windows.Forms.Panel();
             this.craftReqLabel = new System.Windows.Forms.Label();
             this.craftReqNumeric = new System.Windows.Forms.NumericUpDown();
@@ -103,7 +119,7 @@
             this.classComboBox = new System.Windows.Forms.ComboBox();
             this.addClassButton = new System.Windows.Forms.Button();
             this.deleteClassButton = new System.Windows.Forms.Button();
-            this.hDiv5 = new System.Windows.Forms.Panel();
+            this.hDiv4 = new System.Windows.Forms.Panel();
             this.equipLabel = new System.Windows.Forms.Label();
             this.swingLabel = new System.Windows.Forms.Label();
             this.modelLabel = new System.Windows.Forms.Label();
@@ -151,11 +167,18 @@
             this.soundDataToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.devLabel = new System.Windows.Forms.Label();
             this.skillDataToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.blueprintDataToolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.hdTextureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sdTextureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pauseNumeric)).BeginInit();
             this.itemPropertiesPanel.SuspendLayout();
             this.otherItemDataPanel.SuspendLayout();
+            this.blueprintDataPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintMaxDepthNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintMinDepthNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintDurabilityNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintCountNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintOutputPictureBox)).BeginInit();
             this.itemSkillDataPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.craftReqNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.useReqNumeric)).BeginInit();
@@ -408,6 +431,18 @@
         "e to be swung again.");
             this.pauseNumeric.ValueChanged += new System.EventHandler(this.pauseNumeric_ValueChanged);
             // 
+            // blueprintItemIDComboBox
+            // 
+            this.blueprintItemIDComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.blueprintItemIDComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.blueprintItemIDComboBox.Enabled = false;
+            this.blueprintItemIDComboBox.Location = new System.Drawing.Point(10, 282);
+            this.blueprintItemIDComboBox.Name = "blueprintItemIDComboBox";
+            this.blueprintItemIDComboBox.Size = new System.Drawing.Size(244, 28);
+            this.blueprintItemIDComboBox.TabIndex = 20;
+            this.blueprintDataToolTip.SetToolTip(this.blueprintItemIDComboBox, "The Item ID of this material.");
+            this.blueprintItemIDComboBox.TextChanged += new System.EventHandler(this.blueprintItemIDComboBox_TextChanged);
+            // 
             // swingTimePreviewPausePanel
             // 
             this.swingTimePreviewPausePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
@@ -647,6 +682,7 @@
             // otherItemDataPanel
             // 
             this.otherItemDataPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.otherItemDataPanel.Controls.Add(this.blueprintDataPanel);
             this.otherItemDataPanel.Controls.Add(this.itemSkillDataPanel);
             this.otherItemDataPanel.Controls.Add(this.itemSoundDataPanel);
             this.otherItemDataPanel.Controls.Add(this.itemCombatDataPanel);
@@ -659,6 +695,200 @@
             this.otherItemDataPanel.Size = new System.Drawing.Size(1375, 441);
             this.otherItemDataPanel.TabIndex = 15;
             // 
+            // blueprintDataPanel
+            // 
+            this.blueprintDataPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.blueprintDataPanel.Controls.Add(this.hDiv6);
+            this.blueprintDataPanel.Controls.Add(this.blueprintIsDefaultCheckBox);
+            this.blueprintDataPanel.Controls.Add(this.blueprintIsValidCheckBox);
+            this.blueprintDataPanel.Controls.Add(this.hDiv5);
+            this.blueprintDataPanel.Controls.Add(this.blueprintTypeComboBox);
+            this.blueprintDataPanel.Controls.Add(this.blueprintMaxDepthNumeric);
+            this.blueprintDataPanel.Controls.Add(this.blueprintMinDepthNumeric);
+            this.blueprintDataPanel.Controls.Add(this.blueprintDepthLabel);
+            this.blueprintDataPanel.Controls.Add(this.blueprintItemIDComboBox);
+            this.blueprintDataPanel.Controls.Add(this.blueprintDurabilityNumeric);
+            this.blueprintDataPanel.Controls.Add(this.blueprintDurabilityCheckBox);
+            this.blueprintDataPanel.Controls.Add(this.blueprintCountNumeric);
+            this.blueprintDataPanel.Controls.Add(this.blueprintCountLabel);
+            this.blueprintDataPanel.Controls.Add(this.hDiv7);
+            this.blueprintDataPanel.Controls.Add(this.blueprintOutputPictureBox);
+            this.blueprintDataPanel.Location = new System.Drawing.Point(-1, 44);
+            this.blueprintDataPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.blueprintDataPanel.Name = "blueprintDataPanel";
+            this.blueprintDataPanel.Size = new System.Drawing.Size(275, 395);
+            this.blueprintDataPanel.TabIndex = 28;
+            // 
+            // hDiv6
+            // 
+            this.hDiv6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.hDiv6.Location = new System.Drawing.Point(-1, 122);
+            this.hDiv6.Margin = new System.Windows.Forms.Padding(0);
+            this.hDiv6.Name = "hDiv6";
+            this.hDiv6.Size = new System.Drawing.Size(275, 4);
+            this.hDiv6.TabIndex = 29;
+            // 
+            // blueprintIsDefaultCheckBox
+            // 
+            this.blueprintIsDefaultCheckBox.AutoSize = true;
+            this.blueprintIsDefaultCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.blueprintIsDefaultCheckBox.Location = new System.Drawing.Point(95, 54);
+            this.blueprintIsDefaultCheckBox.Name = "blueprintIsDefaultCheckBox";
+            this.blueprintIsDefaultCheckBox.Size = new System.Drawing.Size(104, 24);
+            this.blueprintIsDefaultCheckBox.TabIndex = 28;
+            this.blueprintIsDefaultCheckBox.Text = "Locked DD";
+            this.blueprintDataToolTip.SetToolTip(this.blueprintIsDefaultCheckBox, "Whether or not this blueprint must be found and unlocked in Dig Deep.");
+            this.blueprintIsDefaultCheckBox.UseVisualStyleBackColor = true;
+            this.blueprintIsDefaultCheckBox.CheckedChanged += new System.EventHandler(this.blueprintIsDefaultCheckBox_CheckedChanged);
+            // 
+            // blueprintIsValidCheckBox
+            // 
+            this.blueprintIsValidCheckBox.AutoSize = true;
+            this.blueprintIsValidCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.blueprintIsValidCheckBox.Location = new System.Drawing.Point(11, 54);
+            this.blueprintIsValidCheckBox.Name = "blueprintIsValidCheckBox";
+            this.blueprintIsValidCheckBox.Size = new System.Drawing.Size(78, 24);
+            this.blueprintIsValidCheckBox.TabIndex = 27;
+            this.blueprintIsValidCheckBox.Text = "Is Valid";
+            this.blueprintDataToolTip.SetToolTip(this.blueprintIsValidCheckBox, "Whether or not the blueprint can be used.");
+            this.blueprintIsValidCheckBox.UseVisualStyleBackColor = true;
+            this.blueprintIsValidCheckBox.CheckedChanged += new System.EventHandler(this.blueprintIsValidCheckBox_CheckedChanged);
+            // 
+            // hDiv5
+            // 
+            this.hDiv5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.hDiv5.Location = new System.Drawing.Point(-1, 42);
+            this.hDiv5.Margin = new System.Windows.Forms.Padding(0);
+            this.hDiv5.Name = "hDiv5";
+            this.hDiv5.Size = new System.Drawing.Size(275, 4);
+            this.hDiv5.TabIndex = 25;
+            // 
+            // blueprintTypeComboBox
+            // 
+            this.blueprintTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.blueprintTypeComboBox.FormattingEnabled = true;
+            this.blueprintTypeComboBox.Items.AddRange(new object[] {
+            "Crafting",
+            "Furnace"});
+            this.blueprintTypeComboBox.Location = new System.Drawing.Point(11, 7);
+            this.blueprintTypeComboBox.Name = "blueprintTypeComboBox";
+            this.blueprintTypeComboBox.Size = new System.Drawing.Size(244, 28);
+            this.blueprintTypeComboBox.TabIndex = 24;
+            this.blueprintDataToolTip.SetToolTip(this.blueprintTypeComboBox, "The method of crafting this item.");
+            this.blueprintTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.blueprintTypeComboBox_SelectedIndexChanged);
+            // 
+            // blueprintMaxDepthNumeric
+            // 
+            this.blueprintMaxDepthNumeric.DecimalPlaces = 2;
+            this.blueprintMaxDepthNumeric.Location = new System.Drawing.Point(178, 84);
+            this.blueprintMaxDepthNumeric.Name = "blueprintMaxDepthNumeric";
+            this.blueprintMaxDepthNumeric.Size = new System.Drawing.Size(77, 27);
+            this.blueprintMaxDepthNumeric.TabIndex = 23;
+            this.blueprintDataToolTip.SetToolTip(this.blueprintMaxDepthNumeric, "The maximum depth this blueprint can be found at in Dig Deep.\r\nThis is a percenta" +
+        "ge of the world height, with 0 being the top of the world and 100 being the bott" +
+        "om.\r\n");
+            this.blueprintMaxDepthNumeric.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.blueprintMaxDepthNumeric.ValueChanged += new System.EventHandler(this.blueprintMaxDepthNumeric_ValueChanged);
+            // 
+            // blueprintMinDepthNumeric
+            // 
+            this.blueprintMinDepthNumeric.DecimalPlaces = 2;
+            this.blueprintMinDepthNumeric.Location = new System.Drawing.Point(95, 84);
+            this.blueprintMinDepthNumeric.Name = "blueprintMinDepthNumeric";
+            this.blueprintMinDepthNumeric.Size = new System.Drawing.Size(77, 27);
+            this.blueprintMinDepthNumeric.TabIndex = 22;
+            this.blueprintDataToolTip.SetToolTip(this.blueprintMinDepthNumeric, "The minimum depth this blueprint can be found at in Dig Deep.\r\nThis is a percenta" +
+        "ge of the world height, with 0 being the top of the world and 100 being the bott" +
+        "om.");
+            this.blueprintMinDepthNumeric.ValueChanged += new System.EventHandler(this.blueprintMinDepthNumeric_ValueChanged);
+            // 
+            // blueprintDepthLabel
+            // 
+            this.blueprintDepthLabel.AutoSize = true;
+            this.blueprintDepthLabel.Location = new System.Drawing.Point(30, 86);
+            this.blueprintDepthLabel.Name = "blueprintDepthLabel";
+            this.blueprintDepthLabel.Size = new System.Drawing.Size(50, 20);
+            this.blueprintDepthLabel.TabIndex = 21;
+            this.blueprintDepthLabel.Text = "Depth";
+            this.blueprintDataToolTip.SetToolTip(this.blueprintDepthLabel, "The minimum and maximum depth this blueprint can be found at in Dig Deep.");
+            // 
+            // blueprintDurabilityNumeric
+            // 
+            this.blueprintDurabilityNumeric.Enabled = false;
+            this.blueprintDurabilityNumeric.Location = new System.Drawing.Point(136, 349);
+            this.blueprintDurabilityNumeric.Name = "blueprintDurabilityNumeric";
+            this.blueprintDurabilityNumeric.Size = new System.Drawing.Size(120, 27);
+            this.blueprintDurabilityNumeric.TabIndex = 19;
+            this.blueprintDataToolTip.SetToolTip(this.blueprintDurabilityNumeric, "How much durability damage crafting this item deals to this material.");
+            this.blueprintDurabilityNumeric.ValueChanged += new System.EventHandler(this.blueprintDurabilityNumeric_ValueChanged);
+            // 
+            // blueprintDurabilityCheckBox
+            // 
+            this.blueprintDurabilityCheckBox.AutoSize = true;
+            this.blueprintDurabilityCheckBox.Enabled = false;
+            this.blueprintDurabilityCheckBox.Location = new System.Drawing.Point(11, 350);
+            this.blueprintDurabilityCheckBox.Name = "blueprintDurabilityCheckBox";
+            this.blueprintDurabilityCheckBox.Size = new System.Drawing.Size(88, 24);
+            this.blueprintDurabilityCheckBox.TabIndex = 18;
+            this.blueprintDurabilityCheckBox.Text = "Damage";
+            this.blueprintDataToolTip.SetToolTip(this.blueprintDurabilityCheckBox, "Whether or not crafting this item deals durability damage to this material instea" +
+        "d of using it.");
+            this.blueprintDurabilityCheckBox.UseVisualStyleBackColor = true;
+            this.blueprintDurabilityCheckBox.CheckedChanged += new System.EventHandler(this.blueprintDurabilityCheckBox_CheckedChanged);
+            // 
+            // blueprintCountNumeric
+            // 
+            this.blueprintCountNumeric.Enabled = false;
+            this.blueprintCountNumeric.Location = new System.Drawing.Point(136, 316);
+            this.blueprintCountNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.blueprintCountNumeric.Name = "blueprintCountNumeric";
+            this.blueprintCountNumeric.Size = new System.Drawing.Size(120, 27);
+            this.blueprintCountNumeric.TabIndex = 17;
+            this.blueprintCountNumeric.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.blueprintCountNumeric.ValueChanged += new System.EventHandler(this.blueprintCountNumeric_ValueChanged);
+            // 
+            // blueprintCountLabel
+            // 
+            this.blueprintCountLabel.AutoSize = true;
+            this.blueprintCountLabel.Enabled = false;
+            this.blueprintCountLabel.Location = new System.Drawing.Point(31, 318);
+            this.blueprintCountLabel.Name = "blueprintCountLabel";
+            this.blueprintCountLabel.Size = new System.Drawing.Size(48, 20);
+            this.blueprintCountLabel.TabIndex = 14;
+            this.blueprintCountLabel.Text = "Count";
+            // 
+            // hDiv7
+            // 
+            this.hDiv7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.hDiv7.Location = new System.Drawing.Point(-1, 268);
+            this.hDiv7.Margin = new System.Windows.Forms.Padding(0);
+            this.hDiv7.Name = "hDiv7";
+            this.hDiv7.Size = new System.Drawing.Size(275, 4);
+            this.hDiv7.TabIndex = 12;
+            // 
+            // blueprintOutputPictureBox
+            // 
+            this.blueprintOutputPictureBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.blueprintOutputPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.blueprintOutputPictureBox.Location = new System.Drawing.Point(215, 177);
+            this.blueprintOutputPictureBox.Name = "blueprintOutputPictureBox";
+            this.blueprintOutputPictureBox.Size = new System.Drawing.Size(40, 40);
+            this.blueprintOutputPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.blueprintOutputPictureBox.TabIndex = 4;
+            this.blueprintOutputPictureBox.TabStop = false;
+            // 
             // itemSkillDataPanel
             // 
             this.itemSkillDataPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -670,7 +900,7 @@
             this.itemSkillDataPanel.Controls.Add(this.useReqNumeric);
             this.itemSkillDataPanel.Controls.Add(this.useSkillComboBox);
             this.itemSkillDataPanel.Controls.Add(this.useSkillLabel);
-            this.itemSkillDataPanel.Location = new System.Drawing.Point(-1, 44);
+            this.itemSkillDataPanel.Location = new System.Drawing.Point(300, 44);
             this.itemSkillDataPanel.Margin = new System.Windows.Forms.Padding(0);
             this.itemSkillDataPanel.Name = "itemSkillDataPanel";
             this.itemSkillDataPanel.Size = new System.Drawing.Size(275, 395);
@@ -1183,7 +1413,7 @@
             this.itemTypeDataPanel.Controls.Add(this.classComboBox);
             this.itemTypeDataPanel.Controls.Add(this.addClassButton);
             this.itemTypeDataPanel.Controls.Add(this.deleteClassButton);
-            this.itemTypeDataPanel.Controls.Add(this.hDiv5);
+            this.itemTypeDataPanel.Controls.Add(this.hDiv4);
             this.itemTypeDataPanel.Controls.Add(this.equipLabel);
             this.itemTypeDataPanel.Controls.Add(this.swingLabel);
             this.itemTypeDataPanel.Controls.Add(this.modelLabel);
@@ -1302,16 +1532,16 @@
             this.deleteClassButton.UseVisualStyleBackColor = true;
             this.deleteClassButton.Click += new System.EventHandler(this.deleteClassButton_Click);
             // 
-            // hDiv5
+            // hDiv4
             // 
-            this.hDiv5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.hDiv4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.hDiv5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.hDiv5.Location = new System.Drawing.Point(-1, 243);
-            this.hDiv5.Margin = new System.Windows.Forms.Padding(0);
-            this.hDiv5.Name = "hDiv5";
-            this.hDiv5.Size = new System.Drawing.Size(273, 4);
-            this.hDiv5.TabIndex = 35;
+            this.hDiv4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.hDiv4.Location = new System.Drawing.Point(-1, 243);
+            this.hDiv4.Margin = new System.Windows.Forms.Padding(0);
+            this.hDiv4.Name = "hDiv4";
+            this.hDiv4.Size = new System.Drawing.Size(273, 4);
+            this.hDiv4.TabIndex = 35;
             // 
             // equipLabel
             // 
@@ -1854,6 +2084,12 @@
             this.skillDataToolTip.InitialDelay = 500;
             this.skillDataToolTip.ReshowDelay = 100;
             // 
+            // blueprintDataToolTip
+            // 
+            this.blueprintDataToolTip.AutoPopDelay = 10000;
+            this.blueprintDataToolTip.InitialDelay = 500;
+            this.blueprintDataToolTip.ReshowDelay = 100;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -1873,6 +2109,7 @@
             this.MinimumSize = new System.Drawing.Size(835, 530);
             this.Name = "MainForm";
             this.Text = "Total Miner Mod Creator by Dave The Monitor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.hdTextureBox)).EndInit();
@@ -1880,6 +2117,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.pauseNumeric)).EndInit();
             this.itemPropertiesPanel.ResumeLayout(false);
             this.otherItemDataPanel.ResumeLayout(false);
+            this.blueprintDataPanel.ResumeLayout(false);
+            this.blueprintDataPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintMaxDepthNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintMinDepthNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintDurabilityNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintCountNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueprintOutputPictureBox)).EndInit();
             this.itemSkillDataPanel.ResumeLayout(false);
             this.itemSkillDataPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.craftReqNumeric)).EndInit();
@@ -1985,7 +2229,7 @@
         private Label invLabel;
         private Label itemClassLabel;
         private Label subTypeLabel;
-        private Panel hDiv5;
+        private Panel hDiv4;
         private ToolTip typeDataToolTip;
         private Button addClassButton;
         private Button deleteClassButton;
@@ -1993,9 +2237,6 @@
         private Label classResistanceLabel;
         private Label classPowerLabel;
         private NumericUpDown classResistanceNumeric;
-        private ComboBox itemsComboBox;
-        private ComboBox itemClassComboBox;
-        private ComboBox classComboBox;
         private Panel itemSwingDataPanel;
         private NumericUpDown swingTimeNumeric;
         private CheckBox retractTimeCheckBox;
@@ -2045,5 +2286,25 @@
         private NumericUpDown craftReqNumeric;
         private ComboBox craftSkillComboBox;
         private Label craftSkillLabel;
+        private Panel blueprintDataPanel;
+        private Panel hDiv7;
+        internal NumericUpDown blueprintCountNumeric;
+        internal NumericUpDown blueprintDurabilityNumeric;
+        internal CheckBox blueprintDurabilityCheckBox;
+        internal Label blueprintCountLabel;
+        internal NumericUpDown blueprintMaxDepthNumeric;
+        internal NumericUpDown blueprintMinDepthNumeric;
+        private Label blueprintDepthLabel;
+        private ComboBox blueprintTypeComboBox;
+        private Panel hDiv5;
+        internal ComboBox blueprintItemIDComboBox;
+        internal ComboBox itemsComboBox;
+        internal ComboBox classComboBox;
+        internal ComboBox itemClassComboBox;
+        private CheckBox blueprintIsDefaultCheckBox;
+        private CheckBox blueprintIsValidCheckBox;
+        private Panel hDiv6;
+        internal PictureBox blueprintOutputPictureBox;
+        internal ToolTip blueprintDataToolTip;
     }
 }

@@ -57,6 +57,63 @@
     <CraftReq>22</CraftReq>
     <CraftSkill>Smithing</CraftSkill>
   </SkillData>
+  <BlueprintData>
+    <CraftType>Crafting</CraftType>
+    <IsValid>true</IsValid>
+    <IsDefault>false</IsDefault>
+    <Depth>
+      <X>0.1693431</X>
+      <Y>0.3693431</Y>
+    </Depth>
+    <Count>1</Count>
+    <Materials>
+      <ModInventoryItemXML>
+        <ItemID>None</ItemID>
+        <Durability>0</Durability>
+        <Count>0</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>SteelIngot</ItemID>
+        <Durability>0</Durability>
+        <Count>1</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>None</ItemID>
+        <Durability>0</Durability>
+        <Count>0</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>None</ItemID>
+        <Durability>0</Durability>
+        <Count>0</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>Stick</ItemID>
+        <Durability>0</Durability>
+        <Count>1</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>None</ItemID>
+        <Durability>0</Durability>
+        <Count>0</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>None</ItemID>
+        <Durability>0</Durability>
+        <Count>0</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>Stick</ItemID>
+        <Durability>0</Durability>
+        <Count>1</Count>
+      </ModInventoryItemXML>
+      <ModInventoryItemXML>
+        <ItemID>None</ItemID>
+        <Durability>0</Durability>
+        <Count>0</Count>
+      </ModInventoryItemXML>
+    </Materials>
+  </BlueprintData>
   <TextureHD>SpearHD.png</TextureHD>
   <TextureSD>SpearSD.png</TextureSD>
 </ItemTemplate>

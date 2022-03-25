@@ -5,10 +5,6 @@
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
             devLabel.Visible = Globals.devBuild;
             purchasePriceNumeric.Maximum = int.MaxValue;
             stackSizeNumeric.Maximum = int.MaxValue;
@@ -40,12 +36,19 @@
             useReqNumeric.Maximum = Globals.maxSkillLevel;
             craftReqNumeric.Maximum = Globals.maxSkillLevel;
 
+            blueprintDurabilityNumeric.Maximum = ushort.MaxValue;
+
             otherDataPanels.Add(itemTypeDataPanel);
             otherDataPanels.Add(itemCombatDataPanel);
             otherDataPanels.Add(itemSwingDataPanel);
             otherDataPanels.Add(itemSoundDataPanel);
             otherDataPanels.Add(itemSkillDataPanel);
-            UpdateOtherPanelLocations();
+            otherDataPanels.Add(blueprintDataPanel);
+            foreach (Panel panel in otherDataPanels)
+            {
+                panel.Location = new Point(0, 43);
+            }
+            UpdateOtherDataPanelVisibility(0);
 
             foreach (string plural in Enum.GetNames(typeof(PluralType)))
             {
@@ -64,6 +67,37 @@
                     craftSkillComboBox.Items.Add(skill);
                 }
             }
+
+            for (byte i = 0; i < 9; i++)
+            {
+                BlueprintDataPictureBox bpBox = new BlueprintDataPictureBox(i, this);
+                bpBoxes[i] = bpBox;
+
+                bpBox.BorderStyle = BorderStyle.Fixed3D;
+                bpBox.Parent = blueprintDataPanel;
+                bpBox.Size = new Size(40, 40);
+                bpBox.Image = null;
+                bpBox.Name = $"blueprintDataPictureBox{i}";
+                bpBox.Visible = true;
+                bpBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                int x = 11 + (i % 3 * 40);
+                int y = 137 + ((int)Math.Floor(i / 3f) * 40);
+                bpBox.Location = new Point(x, y);
+                bpBox.BackColor = SystemColors.ControlDark;
+            }
+            blueprintTypeComboBox.SelectedIndex = 0;
+
+            blueprintOutputCountLabel = new Label();
+            blueprintOutputCountLabel.Parent = blueprintOutputPictureBox;
+            blueprintOutputCountLabel.BackColor = Color.Transparent;
+            blueprintOutputCountLabel.Location = new Point(1, 1);
+            blueprintOutputPictureBox.Click += new EventHandler(BlueprintOutputPictureBoxClick);
+            blueprintOutputCountLabel.Click += new EventHandler(BlueprintOutputPictureBoxClick);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            
         }
 
         private void loadModButton_Click(object sender, EventArgs e)
@@ -360,34 +394,7 @@
         
         private void otherItemDataComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (otherItemDataComboBox.SelectedIndex)
-            {
-                case 0:
-                    {
-                        MoveOtherPanel(itemTypeDataPanel, 0);
-                        break;
-                    }
-                case 1:
-                    {
-                        MoveOtherPanel(itemCombatDataPanel, 0);
-                        break;
-                    }
-                case 2:
-                    {
-                        MoveOtherPanel(itemSwingDataPanel, 0);
-                        break;
-                    }
-                case 3:
-                    {
-                        MoveOtherPanel(itemSoundDataPanel, 0);
-                        break;
-                    }
-                case 4:
-                    {
-                        MoveOtherPanel(itemSkillDataPanel, 0);
-                        break;
-                    }
-            }
+            UpdateOtherDataPanelVisibility(otherItemDataComboBox.SelectedIndex);
         }
         
         private void classComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -611,6 +618,163 @@
         private void craftReqNumeric_ValueChanged(object sender, EventArgs e)
         {
             Globals.selectedItem.SkillData.CraftReq = (int)craftReqNumeric.Value;
+        }
+
+        private void blueprintCountNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            if (selectedBPBox == null)
+            {
+                int count = (int)blueprintCountNumeric.Value;
+                Globals.selectedItem.BlueprintData.Count = count;
+                if (count > 1)
+                {
+                    blueprintOutputCountLabel.Visible = true;
+                    blueprintOutputCountLabel.Text = count.ToString();
+                }
+                else
+                {
+                    blueprintOutputCountLabel.Visible = false;
+                }
+            }
+            else
+            {
+                selectedBPBox.SetCountLabel((int)blueprintCountNumeric.Value);
+                Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].Count = (int)blueprintCountNumeric.Value;
+            }
+        }
+
+        private void blueprintDurabilityCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (selectedBPBox == null) return;
+            blueprintDurabilityNumeric.Enabled = blueprintDurabilityCheckBox.Checked;
+            if (blueprintDurabilityCheckBox.Checked)
+            {
+                Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].Durability = (ushort)blueprintDurabilityNumeric.Value;
+            }
+            else
+            {
+                Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].Durability = 0;
+            }
+        }
+
+        private void blueprintDurabilityNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            if (selectedBPBox == null) return;
+            Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].Durability = (ushort)blueprintDurabilityNumeric.Value;
+        }
+
+        private void blueprintItemIDComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedBPBox == null) return;
+            Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].ItemID = blueprintItemIDComboBox.Text;
+            if (Globals.items.TryGetValue(blueprintItemIDComboBox.Text, out Item? item))
+            {
+                selectedBPBox.SetTexture(item.TextureHD);
+            }
+            else if (blueprintItemIDComboBox.Text != null && !blueprintItemIDComboBox.Text.Equals(string.Empty) && !blueprintItemIDComboBox.Text.Equals(Globals.stringNone)) selectedBPBox.SetTexture(Globals.unknownTexture16);
+            else selectedBPBox.SetTexture(null);
+        }
+
+        private void blueprintIsValidCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Globals.selectedItem.BlueprintData.IsValid = blueprintIsValidCheckBox.Checked;
+        }
+
+        private void blueprintIsDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Globals.selectedItem.BlueprintData.IsDefault = blueprintIsDefaultCheckBox.Checked;
+            blueprintDepthLabel.Enabled = blueprintIsDefaultCheckBox.Checked;
+            blueprintMinDepthNumeric.Enabled = blueprintIsDefaultCheckBox.Checked;
+            blueprintMaxDepthNumeric.Enabled = blueprintIsDefaultCheckBox.Checked;
+            if (blueprintIsDefaultCheckBox.Checked)
+            {
+                Globals.selectedItem.BlueprintData.Depth = new Vector2((float)blueprintMinDepthNumeric.Value / 100, (float)blueprintMaxDepthNumeric.Value / 100);
+            }
+            else
+            {
+                Globals.selectedItem.BlueprintData.Depth = new Vector2(0, 0);
+            }
+        }
+
+        private void blueprintMinDepthNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            Globals.selectedItem.BlueprintData.Depth.X = (float)blueprintMinDepthNumeric.Value / 100;
+        }
+
+        private void blueprintMaxDepthNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            Globals.selectedItem.BlueprintData.Depth.Y = (float)blueprintMaxDepthNumeric.Value / 100;
+        }
+
+        private void blueprintTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DeselectBlueprintPictureBox();
+            CraftingType type = ModCreator.GetEnumValue<CraftingType>((string)blueprintTypeComboBox.SelectedItem);
+            Globals.selectedItem.BlueprintData.CraftType = type;
+            int yLocation;
+            if (type == CraftingType.Crafting)
+            {
+                yLocation = 217;
+                foreach (BlueprintDataPictureBox bpBox in bpBoxes)
+                {
+                    if (bpBox.MaterialIndex > 5) bpBox.Location = new Point(11 + (bpBox.MaterialIndex % 3 * 40), yLocation);
+                    bpBox.Visible = true;
+                }
+            }
+            else
+            {
+                yLocation = 177;
+                foreach (BlueprintDataPictureBox bpBox in bpBoxes)
+                {
+                    if (bpBox.MaterialIndex > 5) bpBox.Location = new Point(11 + (bpBox.MaterialIndex % 3 * 40), yLocation);
+                    else bpBox.Visible = false;
+                }
+            }
+        }
+
+        private void BlueprintOutputPictureBoxClick(object? sender, EventArgs e)
+        {
+            DeselectBlueprintPictureBox();
+            blueprintOutputPictureBox.Focus();
+            blueprintOutputPictureBox.BackColor = SystemColors.Control;
+            blueprintItemIDComboBox.Text = Globals.selectedItem.ItemData.ItemID;
+            blueprintItemIDComboBox.Enabled = false;
+            blueprintDurabilityCheckBox.Checked = false;
+            blueprintDurabilityCheckBox.Enabled = false;
+            blueprintDurabilityNumeric.Value = 0;
+            blueprintDurabilityNumeric.Enabled = false;
+            blueprintCountLabel.Enabled = true;
+            blueprintCountNumeric.Enabled = true;
+            blueprintCountNumeric.Value = Globals.selectedItem.BlueprintData.Count;
+
+            string toolTip = "How many of this item is crafted.";
+            blueprintDataToolTip.SetToolTip(blueprintCountLabel, toolTip);
+            blueprintDataToolTip.SetToolTip(blueprintCountNumeric, toolTip);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Globals.modName != null)
+            {
+                DialogResult result = ModCreator.ShowWarningBox(this, "Build mod?", "Closing the app will cause you to lose any unsaved progress. If you don't want to lose your progress and you haven't already, build your mod first. Click No to close without building.", MessageBoxButtons.YesNoCancel);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        {
+                            ExportMod();
+                            break;
+                        }
+                    case DialogResult.No:
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            e.Cancel = true;
+                            break;
+                        }
+                }
+            }
         }
     }
 }
