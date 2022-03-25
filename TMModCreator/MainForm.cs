@@ -756,12 +756,13 @@
         {
             if (Globals.modName != null)
             {
-                DialogResult result = ModCreator.ShowWarningBox(this, "Build mod?", "Closing the app will cause you to lose any unsaved progress. If you don't want to lose your progress and you haven't already, build your mod first. Click No to close without building.", MessageBoxButtons.YesNoCancel);
+                DialogResult result = MessageBox.Show(this, "Closing the app will cause you to lose any unsaved progress. If you don't want to lose your progress and you haven't already, build your mod first. Click No to close without building.", "Build mod before closing?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3);
                 switch (result)
                 {
                     case DialogResult.Yes:
                         {
-                            ExportMod();
+                            DialogResult exportResult = ExportMod();
+                            if (exportResult != DialogResult.OK) e.Cancel = true;
                             break;
                         }
                     case DialogResult.No:

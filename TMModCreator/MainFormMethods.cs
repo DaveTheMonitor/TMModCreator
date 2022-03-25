@@ -683,7 +683,7 @@
             remainingTime += sub;
             return remainingTime;
         }
-        private void ExportMod()
+        private DialogResult ExportMod()
         {
             using ExportModForm exportModForm = new ExportModForm();
             exportModForm.ShowDialog();
@@ -692,6 +692,7 @@
             {
                 MessageBox.Show(this, "Successfully built mod. If you encounter any problems with the mod, please contact the creator of this program, Dave The Monitor.", "Successfully built mod.", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            return result;
         }
         private void NewMod()
         {
