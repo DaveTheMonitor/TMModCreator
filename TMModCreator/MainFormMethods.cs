@@ -11,8 +11,7 @@
         {
             for (int i = 0; i < otherDataPanels.Count; i++)
             {
-                if (i != index) otherDataPanels[i].Visible = false;
-                else otherDataPanels[i].Visible = true;
+                otherDataPanels[i].Visible = i == index;
             }
         }
 
@@ -21,7 +20,10 @@
             if (Globals.modName != null)
             {
                 DialogResult confirmResult = ModCreator.ShowWarningBox(this, "Open a new mod?", $"Open a new mod? All unsaved progress will be lost. If you want to keep your current progress, build the current mod before opening a new one.", MessageBoxButtons.YesNo);
-                if (confirmResult != DialogResult.Yes) return;
+                if (confirmResult != DialogResult.Yes)
+                {
+                    return;
+                }
             }
             DialogResult result;
             string path;
@@ -178,8 +180,14 @@
                     if (Globals.classes.ContainsKey(itemClass.ClassID))
                     {
                         ItemTypeClass baseClass = Globals.classes[itemClass.ClassID];
-                        if (itemClass.PowerSpecified) baseClass.Power = itemClass.Power;
-                        if (itemClass.MaxResistanceSpecified) baseClass.MaxResistance = itemClass.MaxResistance;
+                        if (itemClass.PowerSpecified)
+                        {
+                            baseClass.Power = itemClass.Power;
+                        }
+                        if (itemClass.MaxResistanceSpecified)
+                        {
+                            baseClass.MaxResistance = itemClass.MaxResistance;
+                        }
                     }
                     else
                     {
@@ -204,7 +212,10 @@
                 bpBox.SetTexture(null);
                 bpBox.SetCountLabel(1);
             }
-            if (blueprintOutputPictureBox.Image != null) blueprintOutputPictureBox.Image.Dispose();
+            if (blueprintOutputPictureBox.Image != null)
+            {
+                blueprintOutputPictureBox.Image.Dispose();
+            }
             blueprintOutputPictureBox.Image = null;
             blueprintOutputCountLabel.Visible = false;
 
@@ -218,8 +229,14 @@
 
         private void UnloadTextureBox()
         {
-            if (hdTextureBox.Image != null) hdTextureBox.Image.Dispose();
-            if (sdTextureBox.Image != null) sdTextureBox.Image.Dispose();
+            if (hdTextureBox.Image != null)
+            {
+                hdTextureBox.Image.Dispose();
+            }
+            if (sdTextureBox.Image != null)
+            {
+                sdTextureBox.Image.Dispose();
+            }
             hdTextureBox.Image = null;
             sdTextureBox.Image = null;
         }
@@ -236,8 +253,14 @@
 
             foreach (Item item in Globals.itemsList)
             {
-                if (item.TextureHD == null) item.TextureHD = Globals.missingTexture32;
-                if (item.TextureSD == null) item.TextureSD = Globals.missingTexture16;
+                if (item.TextureHD == null)
+                {
+                    item.TextureHD = Globals.missingTexture32;
+                }
+                if (item.TextureSD == null)
+                {
+                    item.TextureSD = Globals.missingTexture16;
+                }
             }
         }
         private void ReadTextures(string path, string xmlPath, TextureType type)
@@ -452,10 +475,16 @@
                 sdTextureBox.Enabled = true;
                 itemDataPanel.Enabled = true;
                 otherItemDataPanel.Enabled = true;
-                if (otherItemDataComboBox.SelectedIndex == -1) otherItemDataComboBox.SelectedIndex = 0;
+                if (otherItemDataComboBox.SelectedIndex == -1)
+                {
+                    otherItemDataComboBox.SelectedIndex = 0;
+                }
 
                 DeselectBlueprintPictureBox();
-                if (blueprintOutputPictureBox.Image != null) blueprintOutputPictureBox.Image.Dispose();
+                if (blueprintOutputPictureBox.Image != null)
+                {
+                    blueprintOutputPictureBox.Image.Dispose();
+                }
                 blueprintOutputPictureBox.Image = ModCreator.ScaleTexture(item.TextureHD, 32);
                 blueprintTypeComboBox.SelectedItem = ModCreator.GetNull(item.BlueprintData.CraftType, CraftingType.Crafting).ToString();
                 blueprintIsValidCheckBox.Checked = ModCreator.GetNull(item.BlueprintData.IsValid, true);
@@ -468,7 +497,10 @@
                 foreach (BlueprintDataPictureBox bpBox in bpBoxes)
                 {
                     ModInventoryItemXML material = item.BlueprintData.Materials[bpBox.MaterialIndex];
-                    if (bpBox.Image != null) bpBox.SetTexture(null);
+                    if (bpBox.Image != null)
+                    {
+                        bpBox.SetTexture(null);
+                    }
                     if (Globals.items.TryGetValue(material.ItemID, out Item? matItem))
                     {
                         bpBox.SetTexture(matItem.TextureHD);
@@ -493,7 +525,10 @@
         private void DeselectBlueprintPictureBox()
         {
             blueprintOutputPictureBox.BackColor = SystemColors.ControlDark;
-            if (selectedBPBox != null) selectedBPBox.DeselectBox(false);
+            if (selectedBPBox != null)
+            {
+                selectedBPBox.DeselectBox(false);
+            }
             else
             {
                 blueprintItemIDComboBox.Enabled = false;
@@ -535,11 +570,7 @@
         }
         void ChangeTexture(string path, TextureType type)
         {
-            byte textureSize;
-            if (type == TextureType.HDBlock) textureSize = 64;
-            else if (type == TextureType.HDItem) textureSize = 32;
-            else textureSize = 16;
-
+            int textureSize = ModCreator.GetTextureSize(type);
             try
             {
                 using Image originalTexture = Image.FromFile(path);
@@ -568,8 +599,14 @@
         }
         private static void DragEventEffect(DragEventArgs e, string format)
         {
-            if (e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Link;
-            else e.Effect = DragDropEffects.None;
+            if (e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Link;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
         private void OpenClass(string classID)
         {
@@ -655,8 +692,14 @@
             swingTimePreviewPausePanel.Width = pauseWidth;
             swingPreviewExtendToolTip.SetToolTip(swingTimePreviewExtendPanel, $"Extending ({FloatToString(extendTime)} seconds)");
             swingPreviewExtendedPauseToolTip.SetToolTip(swingTimePreviewExtendedPausePanel, $"Extended Pause ({FloatToString(swing.ExtendedPause)} seconds)");
-            if (swing.RetractTime > 0) swingPreviewRetractToolTip.SetToolTip(swingTimePreviewRetractPanel, $"Retracting ({FloatToString(retractTime)} seconds)");
-            else swingPreviewRetractToolTip.SetToolTip(swingTimePreviewRetractPanel, $"Automatic Retracting ({FloatToString(retractTime)} seconds)");
+            if (swing.RetractTime > 0)
+            {
+                swingPreviewRetractToolTip.SetToolTip(swingTimePreviewRetractPanel, $"Retracting ({FloatToString(retractTime)} seconds)");
+            }
+            else
+            {
+                swingPreviewRetractToolTip.SetToolTip(swingTimePreviewRetractPanel, $"Automatic Retracting ({FloatToString(retractTime)} seconds)");
+            }
             swingPreviewPauseToolTip.SetToolTip(swingTimePreviewPausePanel, $"Pausing ({FloatToString(swing.Pause)} seconds)");
             SetVisibility(swingTimePreviewExtendPanel, extendTime);
             SetVisibility(swingTimePreviewExtendedPausePanel, swing.ExtendedPause);
@@ -665,8 +708,7 @@
 
             static void SetVisibility(Panel panel, float time)
             {
-                if (time > 0) panel.Visible = true;
-                else panel.Visible = false;
+                panel.Visible = time > 0;
             }
             static string FloatToString(float value)
             {
@@ -719,10 +761,16 @@
                     {
                         UnloadMod();
                     }
-                    else if (needConfirm) return;
+                    else if (needConfirm)
+                    {
+                        return;
+                    }
                     Globals.modName = modName;
                     Globals.selectedItem = Globals.emptyItem;
-                    if (Globals.baseClasses.Count == 0) Globals.CreateBaseClasses(this);
+                    if (Globals.baseClasses.Count == 0)
+                    {
+                        Globals.CreateBaseClasses(this);
+                    }
                     foreach (ItemTypeClass itemClass in Globals.classesList)
                     {
                         classComboBox.Items.Add(itemClass.ClassID);
@@ -739,12 +787,18 @@
         {
             if (options == TextureBoxOptions.HD || options == TextureBoxOptions.Both)
             {
-                if (hdTextureBox.Image != null) hdTextureBox.Image.Dispose();
+                if (hdTextureBox.Image != null)
+                {
+                    hdTextureBox.Image.Dispose();
+                }
                 hdTextureBox.Image = ModCreator.ScaleTexture(item.TextureHD, 96);
             }
             if (options == TextureBoxOptions.SD || options == TextureBoxOptions.Both)
             {
-                if (sdTextureBox.Image != null) sdTextureBox.Image.Dispose();
+                if (sdTextureBox.Image != null)
+                {
+                    sdTextureBox.Image.Dispose();
+                }
                 sdTextureBox.Image = ModCreator.ScaleTexture(item.TextureSD, 96);
             }
         }

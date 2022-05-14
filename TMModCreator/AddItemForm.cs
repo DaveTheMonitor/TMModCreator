@@ -49,8 +49,14 @@ namespace DaveTheMonitor.TMModCreator
 
         private void AddItemForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape) DialogResult = DialogResult.Cancel;
-            else if (e.KeyCode == Keys.Enter && itemIDTextBox.Focused && addItemButton.Enabled) DialogResult = DialogResult.OK;
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+            }
+            else if (e.KeyCode == Keys.Enter && itemIDTextBox.Focused && addItemButton.Enabled)
+            {
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }

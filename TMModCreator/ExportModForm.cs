@@ -16,7 +16,10 @@ namespace DaveTheMonitor.TMModCreator
         {
             InitializeComponent();
             modNameTextBox.Text = Globals.modName;
-            if (Globals.modName == null) exportModButton.Enabled = false;
+            if (Globals.modName == null)
+            {
+                exportModButton.Enabled = false;
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -56,10 +59,16 @@ namespace DaveTheMonitor.TMModCreator
                 }
                 DialogResult overwrite = DialogResult.Yes;
                 bool exists = Directory.Exists(path);
-                if (exists) overwrite = ModCreator.ShowWarningBox(this, "Overwrite existing mod?", $"The mod {Globals.modName} is already present in this folder. This tool is still in development, so it is recommended to backup your mod before overwriting it.", MessageBoxButtons.YesNo);
+                if (exists)
+                {
+                    overwrite = ModCreator.ShowWarningBox(this, "Overwrite existing mod?", $"The mod {Globals.modName} is already present in this folder. This tool is still in development, so it is recommended to backup your mod before overwriting it.", MessageBoxButtons.YesNo);
+                }
                 if (overwrite == DialogResult.Yes)
                 {
-                    if (!exists) Directory.CreateDirectory(path);
+                    if (!exists)
+                    {
+                        Directory.CreateDirectory(path);
+                    }
                     ExportMod(path);
                     DialogResult = DialogResult.OK;
                 }
@@ -78,16 +87,37 @@ namespace DaveTheMonitor.TMModCreator
             foreach (Item item in Globals.itemsList)
             {
                 itemData.Add(item.ItemData);
-                if (item.ItemTypeDataSpecified) typeData.Add(new ModItemTypeDataXML(item.ItemData.ItemID, item.ItemTypeData, item.ItemCombatDataSpecified));
-                if (item.ItemCombatDataSpecified) combatData.Add(new ModItemCombatDataXML(item.ItemData.ItemID, item.ItemCombatData));
-                if (item.ItemSwingTimeDataSpecified) swingTimeData.Add(new ModItemSwingTimeDataXML(item.ItemData.ItemID, item.ItemSwingTimeData));
-                if (item.ItemSoundDataSpecified) soundData.Add(new ModItemSoundDataXML(item.ItemData.ItemID, item.ItemSoundData));
-                if (item.SkillDataSpecified) skillData.Add(new ModSkillDataXML(item.ItemData.ItemID, item.SkillData));
-                if (item.BlueprintDataSpecified) blueprintData.Add(new ModBlueprintDataXML(item.ItemData.ItemID, item.BlueprintData));
+                if (item.ItemTypeDataSpecified)
+                {
+                    typeData.Add(new ModItemTypeDataXML(item.ItemData.ItemID, item.ItemTypeData, item.ItemCombatDataSpecified));
+                }
+                if (item.ItemCombatDataSpecified)
+                {
+                    combatData.Add(new ModItemCombatDataXML(item.ItemData.ItemID, item.ItemCombatData));
+                }
+                if (item.ItemSwingTimeDataSpecified)
+                {
+                    swingTimeData.Add(new ModItemSwingTimeDataXML(item.ItemData.ItemID, item.ItemSwingTimeData));
+                }
+                if (item.ItemSoundDataSpecified)
+                {
+                    soundData.Add(new ModItemSoundDataXML(item.ItemData.ItemID, item.ItemSoundData));
+                }
+                if (item.SkillDataSpecified)
+                {
+                    skillData.Add(new ModSkillDataXML(item.ItemData.ItemID, item.SkillData));
+                }
+                if (item.BlueprintDataSpecified)
+                {
+                    blueprintData.Add(new ModBlueprintDataXML(item.ItemData.ItemID, item.BlueprintData));
+                }
             }
             foreach (ItemTypeClass itemClass in Globals.classesList)
             {
-                if (!Globals.IsBaseClass(itemClass)) classData.Add(new ModItemTypeClassDataXML(itemClass));
+                if (!Globals.IsBaseClass(itemClass))
+                {
+                    classData.Add(new ModItemTypeClassDataXML(itemClass));
+                }
             }
             SaveFile(itemData.ToArray(), Path.Combine(path, "ItemData.xml"));
             SaveFile(typeData.ToArray(), Path.Combine(path, "ItemTypeData.xml"));
@@ -148,14 +178,26 @@ namespace DaveTheMonitor.TMModCreator
 
         private void modNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(modNameTextBox.Text)) exportModButton.Enabled = false;
-            else exportModButton.Enabled = true;
+            if (string.IsNullOrWhiteSpace(modNameTextBox.Text))
+            {
+                exportModButton.Enabled = false;
+            }
+            else
+            {
+                exportModButton.Enabled = true;
+            }
         }
 
         private void ExportModForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape) DialogResult = DialogResult.Cancel;
-            else if (e.KeyCode == Keys.Enter && modNameTextBox.Focused && exportModButton.Enabled) StartExportMod();
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+            }
+            else if (e.KeyCode == Keys.Enter && modNameTextBox.Focused && exportModButton.Enabled)
+            {
+                StartExportMod();
+            }
         }
     }
 }

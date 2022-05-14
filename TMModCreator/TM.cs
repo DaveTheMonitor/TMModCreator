@@ -543,7 +543,10 @@ namespace DaveTheMonitor.TMModCreator
             Result = new ModInventoryItemNDXML(id, data.Count);
             foreach (ModInventoryItemXML material in data.Materials)
             {
-                if (!material.ItemIDNone && material.Count == 0) material.Count = 1;
+                if (!material.ItemIDNone && material.Count == 0)
+                {
+                    material.Count = 1;
+                }
             }
             Material31 = data.Materials[0];
             Material32 = data.Materials[1];

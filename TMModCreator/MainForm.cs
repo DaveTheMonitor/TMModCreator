@@ -107,8 +107,7 @@
 
         private void itemsComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (!Globals.items.ContainsKey(itemsComboBox.Text) && !string.IsNullOrWhiteSpace(itemsComboBox.Text) && !itemsComboBox.Text.Contains(' ') && !string.IsNullOrWhiteSpace(Globals.modName)) addItemButton.Enabled = true;
-            else addItemButton.Enabled = false;
+            addItemButton.Enabled = !Globals.items.ContainsKey(itemsComboBox.Text) && !string.IsNullOrWhiteSpace(itemsComboBox.Text) && !itemsComboBox.Text.Contains(' ') && !string.IsNullOrWhiteSpace(Globals.modName);
         }
         
         private void itemsComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -189,7 +188,10 @@
                 durabilityNumeric.Enabled = true;
                 stackSizeNumeric.Enabled = false;
                 Globals.selectedItem.ItemData.Durability = (ushort)durabilityNumeric.Value;
-                if (durabilityNumeric.Value > 0) Globals.selectedItem.ItemData.StackSize = 100;
+                if (durabilityNumeric.Value > 0)
+                {
+                    Globals.selectedItem.ItemData.StackSize = 100;
+                }
             }
             else
             {
@@ -316,7 +318,10 @@
             if (e.Data != null)
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null && files.Length > 0) ChangeTexture(files[0], TextureType.HDItem);
+                if (files != null && files.Length > 0)
+                {
+                    ChangeTexture(files[0], TextureType.HDItem);
+                }
             }
         }
         
@@ -348,7 +353,10 @@
             if (e.Data != null)
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null && files.Length > 0) ChangeTexture(files[0], TextureType.SD);
+                if (files != null && files.Length > 0)
+                {
+                    ChangeTexture(files[0], TextureType.SD);
+                }
             }
         }
         
@@ -407,8 +415,14 @@
         
         private void classComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (!Globals.classes.ContainsKey(classComboBox.Text) && !string.IsNullOrWhiteSpace(classComboBox.Text) && !classComboBox.Text.Contains(' ') && !string.IsNullOrWhiteSpace(Globals.modName)) addClassButton.Enabled = true;
-            else addClassButton.Enabled = false;
+            if (!Globals.classes.ContainsKey(classComboBox.Text) && !string.IsNullOrWhiteSpace(classComboBox.Text) && !classComboBox.Text.Contains(' ') && !string.IsNullOrWhiteSpace(Globals.modName))
+            {
+                addClassButton.Enabled = true;
+            }
+            else
+            {
+                addClassButton.Enabled = false;
+            }
         }
         
         private void classPowerNumeric_ValueChanged(object sender, EventArgs e)
@@ -491,7 +505,10 @@
         private void retractNumeric_ValueChanged(object sender, EventArgs e)
         {
             ItemSwingTimeData swing = Globals.selectedItem.ItemSwingTimeData;
-            if (swing.RetractTime < 0) return;
+            if (swing.RetractTime < 0)
+            {
+                return;
+            }
             float remainingTime = GetAvailableSwingTime(swing, swing.RetractTime);
             if (remainingTime >= 0 && (float)retractNumeric.Value > remainingTime)
             {
@@ -597,7 +614,10 @@
                         }
                 }
             }
-            if (e.KeyCode == Keys.Enter && itemsComboBox.Focused && addItemButton.Enabled) AddItem();
+            if (e.KeyCode == Keys.Enter && itemsComboBox.Focused && addItemButton.Enabled)
+            {
+                AddItem();
+            }
         }
 
         private void useSkillComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -645,7 +665,10 @@
 
         private void blueprintDurabilityCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (selectedBPBox == null) return;
+            if (selectedBPBox == null)
+            {
+                return;
+            }
             blueprintDurabilityNumeric.Enabled = blueprintDurabilityCheckBox.Checked;
             if (blueprintDurabilityCheckBox.Checked)
             {
@@ -659,20 +682,32 @@
 
         private void blueprintDurabilityNumeric_ValueChanged(object sender, EventArgs e)
         {
-            if (selectedBPBox == null) return;
+            if (selectedBPBox == null)
+            {
+                return;
+            }
             Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].Durability = (ushort)blueprintDurabilityNumeric.Value;
         }
 
         private void blueprintItemIDComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (selectedBPBox == null) return;
+            if (selectedBPBox == null)
+            {
+                return;
+            }
             Globals.selectedItem.BlueprintData.Materials[selectedBPBox.MaterialIndex].ItemID = blueprintItemIDComboBox.Text;
             if (Globals.items.TryGetValue(blueprintItemIDComboBox.Text, out Item? item))
             {
                 selectedBPBox.SetTexture(item.TextureHD);
             }
-            else if (blueprintItemIDComboBox.Text != null && !blueprintItemIDComboBox.Text.Equals(string.Empty) && !blueprintItemIDComboBox.Text.Equals(Globals.stringNone)) selectedBPBox.SetTexture(Globals.unknownTexture16);
-            else selectedBPBox.SetTexture(null);
+            else if (blueprintItemIDComboBox.Text != null && !blueprintItemIDComboBox.Text.Equals(string.Empty) && !blueprintItemIDComboBox.Text.Equals(Globals.stringNone))
+            {
+                selectedBPBox.SetTexture(Globals.unknownTexture16);
+            }
+            else
+            {
+                selectedBPBox.SetTexture(null);
+            }
         }
 
         private void blueprintIsValidCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -762,7 +797,10 @@
                     case DialogResult.Yes:
                         {
                             DialogResult exportResult = ExportMod();
-                            if (exportResult != DialogResult.OK) e.Cancel = true;
+                            if (exportResult != DialogResult.OK)
+                            {
+                                e.Cancel = true;
+                            }
                             break;
                         }
                     case DialogResult.No:

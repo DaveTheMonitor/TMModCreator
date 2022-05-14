@@ -59,7 +59,10 @@ namespace DaveTheMonitor.TMModCreator
             for (int i = 0; i < baseClasses.Count; i++)
             {
                 ItemTypeClass baseClass = baseClasses[i];
-                if (baseClass.ClassID.Equals(itemClass.ClassID) && baseClass.Power == itemClass.Power && baseClass.MaxResistance == itemClass.MaxResistance) return true;
+                if (baseClass.ClassID.Equals(itemClass.ClassID) && baseClass.Power == itemClass.Power && baseClass.MaxResistance == itemClass.MaxResistance)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -196,8 +199,14 @@ namespace DaveTheMonitor.TMModCreator
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
                     T? deserialized = (T?)serializer.Deserialize(stream);
-                    if (deserialized != null) return deserialized;
-                    else throw new Exception("Invalid XML");
+                    if (deserialized != null)
+                    {
+                        return deserialized;
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid XML");
+                    }
                 }
             }
             catch
@@ -227,8 +236,14 @@ namespace DaveTheMonitor.TMModCreator
         internal static T GetEnumValue<T>(string value) where T : struct, Enum
         {
             bool parsed = Enum.TryParse<T>(value, out T enumValue);
-            if (parsed) return enumValue;
-            else return Enum.GetValues<T>()[0];
+            if (parsed)
+            {
+                return enumValue;
+            }
+            else
+            {
+                return Enum.GetValues<T>()[0];
+            }
         }
 
         /// <summary>
@@ -261,6 +276,11 @@ namespace DaveTheMonitor.TMModCreator
             return texture;
         }
 
+        internal static int GetTextureSize(TextureType textureType)
+        {
+            return textureType == TextureType.HDBlock ? 64 : textureType == TextureType.HDItem ? 32 : 16;
+        }
+
         internal static Point GetTexturePosition(Size atlasSize, int textureSize, int index)
         {
             decimal texturesWidth = atlasSize.Width / textureSize;
@@ -272,13 +292,25 @@ namespace DaveTheMonitor.TMModCreator
 
         internal static T GetNull<T>(T? value, T defaultValue) where T : struct
         {
-            if (value == null) return defaultValue;
-            else return (T)value;
+            if (value == null)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return (T)value;
+            }
         }
         internal static T GetNull<T>(T? value, T defaultValue) where T : class
         {
-            if (value == null) return defaultValue;
-            else return value;
+            if (value == null)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return value;
+            }
         }
     }
 
@@ -289,12 +321,18 @@ namespace DaveTheMonitor.TMModCreator
         public Label CountLabel;
         private void ClickMethod(object? sender, EventArgs e)
         {
-            if (sender == null) return;
+            if (sender == null)
+            {
+                return;
+            }
             SelectBox();
         }
         public void SetTexture(Image? texture)
         {
-            if (Image != null) Image.Dispose();
+            if (Image != null)
+            {
+                Image.Dispose();
+            }
             if (texture == null)
             {
                 Image = null;
@@ -304,7 +342,10 @@ namespace DaveTheMonitor.TMModCreator
         }
         public void SetCountLabel(int count)
         {
-            if (count <= 1) CountLabel.Visible = false;
+            if (count <= 1)
+            {
+                CountLabel.Visible = false;
+            }
             else
             {
                 CountLabel.Visible = true;
@@ -330,7 +371,10 @@ namespace DaveTheMonitor.TMModCreator
             Form.blueprintOutputPictureBox.BackColor = SystemColors.ControlDark;
             foreach (BlueprintDataPictureBox box in Form.bpBoxes)
             {
-                if (box != this) box.DeselectBox(true);
+                if (box != this)
+                {
+                    box.DeselectBox(true);
+                }
             }
             Form.selectedBPBox = this;
             BackColor = SystemColors.Control;

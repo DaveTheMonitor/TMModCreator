@@ -19,14 +19,26 @@ namespace DaveTheMonitor.TMModCreator
 
         private void modNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(modNameTextBox.Text)) newModButton.Enabled = false;
-            else newModButton.Enabled = true;
+            if (string.IsNullOrEmpty(modNameTextBox.Text))
+            {
+                newModButton.Enabled = false;
+            }
+            else
+            {
+                newModButton.Enabled = true;
+            }
         }
 
         private void NewModForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape) DialogResult = DialogResult.Cancel;
-            else if (e.KeyCode == Keys.Enter && modNameTextBox.Focused && newModButton.Enabled) DialogResult = DialogResult.OK;
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+            }
+            else if (e.KeyCode == Keys.Enter && modNameTextBox.Focused && newModButton.Enabled)
+            {
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }

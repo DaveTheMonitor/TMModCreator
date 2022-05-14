@@ -97,18 +97,30 @@ namespace DaveTheMonitor.TMModCreator
         public Image TextureHD;
         internal void DisposeTextures()
         {
-            if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture32) TextureHD.Dispose();
-            if (TextureSD != Globals.missingTexture16) TextureSD.Dispose();
+            if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture32)
+            {
+                TextureHD.Dispose();
+            }
+            if (TextureSD != Globals.missingTexture16)
+            {
+                TextureSD.Dispose();
+            }
         }
         internal void DisposeTextures(DisposeTextureOptions options)
         {
             if (options == DisposeTextureOptions.HD)
             {
-                if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture64) TextureHD.Dispose();
+                if (TextureHD != Globals.missingTexture32 && TextureHD != Globals.missingTexture64)
+                {
+                    TextureHD.Dispose();
+                }
             }
             else if (options == DisposeTextureOptions.SD)
             {
-                if (TextureSD != Globals.missingTexture16) TextureSD.Dispose();
+                if (TextureSD != Globals.missingTexture16)
+                {
+                    TextureSD.Dispose();
+                }
             }
         }
         public Item Clone()
@@ -411,7 +423,10 @@ namespace DaveTheMonitor.TMModCreator
                 bool specified = false;
                 foreach (ModInventoryItemXML mat in Materials)
                 {
-                    if (!mat.ItemID.Equals(Globals.stringNone) && !mat.ItemID.Equals(string.Empty)) specified = true;
+                    if (!mat.ItemID.Equals(Globals.stringNone) && !mat.ItemID.Equals(string.Empty))
+                    {
+                        specified = true;
+                    }
                 }
                 return specified;
             }
@@ -435,7 +450,10 @@ namespace DaveTheMonitor.TMModCreator
             IsValid = ModCreator.GetNull(data.IsValid, true);
             IsDefault = ModCreator.GetNull(data.IsDefault, false);
             Depth = ModCreator.GetNull(data.Depth, new Vector2(0, 0));
-            if (data.Result != null) Count = ModCreator.GetNull(data.Result.Count, 1);
+            if (data.Result != null)
+            {
+                Count = ModCreator.GetNull(data.Result.Count, 1);
+            }
             else Count = 1;
             Materials = new ModInventoryItemXML[9];
             Materials[0] = ModCreator.GetNull(data.Material31, new ModInventoryItemXML());
